@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Top Right: User Profile Information -->
+    <div class="d-flex justify-content-end align-items-center mb-5">
+        <div class="d-flex align-items-center gap-3">
+            <!-- User Info -->
+            <div class="text-end">
+                <h6 class="mb-0 fw-bold">amitispro</h6>
+                <small class="text-muted">amit.baliarsingh04@gmail.com</small>
+            </div>
+            <!-- Circular Profile Logo Placeholder -->
+            <div class="rounded-circle bg-secondary text-white d-flex justify-content-center align-items-center" 
+                 style="width: 45px; height: 45px; font-weight: bold;">
+                <!-- TODO: Paste your profile image or SVG icon here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content / Dashboard Actions -->
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow-sm border-0 rounded-4 p-4 bg-light">
+                <h4 class="text-center mb-4 text-dark fw-semibold">Quick Actions</h4>
+                
+                <div class="d-grid gap-3">
+                    <!-- QR Button -->
+                    <a href="#" class="btn btn-dark btn-lg py-3 rounded-pill shadow-sm d-flex align-items-center justify-content-center gap-2">
+                        <!-- TODO: Paste your QR SVG icon here -->
+                        Scan QR & Pay
+                    </a>
+
+                    <!-- Check Balance Button -->
+                    <a href="#" class="btn btn-outline-primary btn-lg py-3 rounded-pill">
+                        Check Balance
+                    </a>
+
+                    <!-- See Transaction History Button -->
+                    <a href="#" class="btn btn-outline-secondary btn-lg py-3 rounded-pill">
+                        See Transaction History
+                    </a>
+
+                    <!-- Profile Button -->
+                    <a href="#" class="btn btn-outline-dark btn-lg py-3 rounded-pill">
+                        Profile
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
