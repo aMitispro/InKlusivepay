@@ -7,6 +7,7 @@ from flask import Flask
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_mail import Mail
+from flask_wtf.csrf import CSRFProtect
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
@@ -29,6 +30,8 @@ app.config["MAIL_DEFAULT_SENDER"] = getenv("MAIL_DEFAULT_SENDER", "shubhayon.ban
 engine = create_engine(f"sqlite:///{_ROOT_DIR / 'appdata.db'}", echo=False)
 Base.metadata.create_all(engine)
 Session = sessionmaker(bind=engine, expire_on_commit=False)
+
+csrf = CSRFProtect(app)
 
 login_manager = LoginManager()
 login_manager.init_app(app)

@@ -229,11 +229,13 @@
                 {% if is_admin %}
                 <div class="d-flex gap-2">
                     <form method="POST" action="{{ url_for('approve_transfer', request_id=req.id) }}" class="d-inline">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                         <button type="submit" class="btn btn-sm btn-success px-3 fw-semibold">
                             <i class="bi bi-check-lg me-1"></i>Approve Transfer
                         </button>
                     </form>
                     <form method="POST" action="{{ url_for('reject_transfer', request_id=req.id) }}" class="d-inline">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                         <button type="submit" class="btn btn-sm btn-outline-danger px-3">Reject</button>
                     </form>
                 </div>
@@ -356,6 +358,7 @@
                 <!-- Admin Save Limit Button (or live updated) -->
                 {% if is_admin %}
                 <form method="POST" action="{{ url_for('set_family_limit') }}" id="limitForm" class="mt-3">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                     <input type="hidden" name="daily_limit" id="limitFormInput" value="{{ family.daily_limit }}">
                     <button type="submit" class="btn btn-outline-primary btn-sm w-100 py-2 rounded-3 fw-semibold" id="saveLimitBtn" style="display: none;">
                         <i class="bi bi-check2-circle me-1"></i>Save New Safety Limit
@@ -383,6 +386,7 @@
         </div>
         {% if is_admin %}
         <form method="POST" action="{{ url_for('toggle_family_status') }}" class="d-inline">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <button type="submit" class="btn btn-sm {% if family.is_active %}btn-outline-secondary{% else %}btn-success{% endif %} rounded-pill px-3">
                 {% if family.is_active %}<i class="bi bi-pause-circle me-1"></i>Pause Circle{% else %}<i class="bi bi-play-circle me-1"></i>Resume Circle{% endif %}
             </button>
@@ -400,6 +404,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form method="POST" action="{{ url_for('add_family_member') }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                 <div class="modal-body">
                     <p class="text-muted small">Enter the username or email of the person you want to protect or add to your Family Circle.</p>
                     <div class="mb-3">
@@ -464,6 +469,7 @@
                         </div>
                         {% if m.user_id != family.admin_id %}
                         <form method="POST" action="{{ url_for('remove_family_member', member_id=m.id) }}">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                             <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Remove {{ m.user.username }} from Family Circle?');">
                                 Remove
                             </button>

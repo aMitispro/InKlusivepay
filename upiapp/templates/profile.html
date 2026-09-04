@@ -91,6 +91,7 @@
                     {% endif %}
                 </div>
                 <form method="POST" action="{{ url_for('set_transaction_pin') }}" class="d-flex gap-2 mt-2">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                     <input type="password" name="pin" class="form-control form-control-sm text-center fw-bold" placeholder="••••" maxlength="4" pattern="\d{4}" inputmode="numeric" required style="letter-spacing: 0.25rem;">
                     <button type="submit" class="btn btn-sm btn-outline-primary px-3 rounded-3 text-nowrap">
                         {% if has_pin %}Update PIN{% else %}Set PIN in 1 Step{% endif %}
