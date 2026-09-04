@@ -113,34 +113,41 @@
 
 <body>
     {% if request.endpoint not in ['login', 'register', 'verify_otp', 'resend_otp'] %}
-    <!-- Unified Brand Upper Navbar with Logo, Modes, Login/Register & Profile -->
+    <!-- Unified Brand Upper Navbar with Centered Logo, Modes, Login/Register & Profile -->
     <header class="border-bottom py-2 bg-white shadow-sm sticky-top">
-        <div class="container d-flex justify-content-between align-items-center">
-            <!-- Brand Logo -->
-            <a class="text-decoration-none d-flex align-items-center" href="{{ url_for('home') }}">
-                <img src="{{ url_for('static', filename='img/navbar_logo.png') }}" class="navbar-brand-logo" alt="InKlusivepay">
-            </a>
+        <div class="container d-flex justify-content-between align-items-center position-relative">
+            <!-- Left: Brand / Home Link -->
+            <div class="d-flex align-items-center">
+                <a class="text-decoration-none d-flex align-items-center" href="{{ url_for('home') }}">
+                    <img src="{{ url_for('static', filename='img/brand_header_logo.png') }}" style="height: 38px; width: auto; object-fit: contain;" alt="InKlusiv Pay">
+                </a>
+            </div>
 
-            <!-- Right Controls: Quick Modes & Auth Buttons -->
+            <!-- Center: App Logo (Centered) -->
+            <div class="position-absolute start-50 translate-middle-x d-none d-md-block text-center">
+                <a class="text-decoration-none d-inline-block" href="{{ url_for('home') }}">
+                    <img src="{{ url_for('static', filename='img/navbar_logo.png') }}" style="height: 40px; width: auto; object-fit: contain;" alt="InKlusiv Pay">
+                </a>
+            </div>
+
+            <!-- Right Controls: Quick Modes, Profile, Logout -->
             <div class="d-flex align-items-center gap-2">
                 <!-- Accessibility Quick Modes Dropdown -->
                 <div class="dropdown">
-                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle d-flex align-items-center gap-1 rounded-pill px-3" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="Accessibility Quick Modes">
-                        <img src="{{ url_for('static', filename='svg/person.svg') }}" width="15" height="15" alt="Modes" style="opacity: 0.85;">
-                        <span class="d-none d-sm-inline">Modes</span>
+                    <button class="btn btn-secondary dropdown-toggle d-flex align-items-center gap-2" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="Accessibility Quick Modes">
+                        <img src="{{ url_for('static', filename='svg/person.svg') }}" width="15" height="15" alt="Modes" style="filter: brightness(0) invert(1);">
+                        <span>Modes</span>
                     </button>
-                    <ul class="dropdown-menu dropdown-menu-end shadow p-2 rounded-4" style="min-width: 240px;">
-                        <!-- Colorblind / CVD Modes -->
+                    <ul class="dropdown-menu dropdown-menu-end shadow p-2 rounded-3" style="min-width: 240px;">
+                        <!-- Colorblind / CVD Modes: Exactly 2 options -->
                         <li>
                             <div class="px-2 py-1">
                                 <span class="d-flex align-items-center gap-1 small fw-bold text-dark mb-1">
                                     <img src="{{ url_for('static', filename='svg/eye.svg') }}" width="16" height="16" alt="Eye" class="me-1"> Color Vision Mode
                                 </span>
                                 <div class="btn-group w-100 mb-1" role="group">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary cvd-select-btn active" data-cvd="default" style="font-size: 10px;">Default</button>
-                                    <button type="button" class="btn btn-sm btn-outline-secondary cvd-select-btn" data-cvd="deuteranopia" style="font-size: 10px;" title="Green-Blind">Deutan</button>
-                                    <button type="button" class="btn btn-sm btn-outline-secondary cvd-select-btn" data-cvd="protanopia" style="font-size: 10px;" title="Red-Blind">Protan</button>
-                                    <button type="button" class="btn btn-sm btn-outline-secondary cvd-select-btn" data-cvd="tritanopia" style="font-size: 10px;" title="Blue-Blind">Tritan</button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary cvd-select-btn active" data-cvd="default" style="font-size: 11px;">Default</button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary cvd-select-btn" data-cvd="deuteranopia" style="font-size: 11px;" title="High Contrast Mode">High Contrast</button>
                                 </div>
                             </div>
                         </li>
@@ -164,17 +171,18 @@
 
                 <!-- Profile & Logout (When Authenticated) -->
                 {% if current_user.is_authenticated %}
-                <a href="{{ url_for('profile') }}" class="btn btn-sm btn-outline-primary rounded-pill px-3 fw-semibold d-flex align-items-center gap-1" title="Profile">
-                    <img src="{{ url_for('static', filename='img/default_avatar.png') }}" class="rounded-circle" width="20" height="20" alt="Avatar">
-                    <span class="d-none d-md-inline">{{ current_user.username }}</span>
+                <a href="{{ url_for('profile') }}" class="btn btn-secondary d-flex align-items-center gap-2" title="Profile">
+                    <img src="{{ url_for('static', filename='img/default_avatar.png') }}" class="rounded-circle border border-white" width="20" height="20" alt="Avatar">
+                    <span class="d-none d-sm-inline">{{ current_user.username }}</span>
                 </a>
-                <a href="{{ url_for('logout') }}" class="btn btn-sm btn-outline-danger rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;" title="Logout">
-                    <img src="{{ url_for('static', filename='svg/logout.svg') }}" width="16" height="16" alt="Logout" style="filter: invert(27%) sepia(85%) saturate(2320%) hue-rotate(338deg) brightness(96%) contrast(92%);">
+                <a href="{{ url_for('logout') }}" class="btn btn-danger d-flex align-items-center gap-1" title="Logout">
+                    <img src="{{ url_for('static', filename='svg/logout.svg') }}" width="16" height="16" alt="Logout" style="filter: brightness(0) invert(1);">
+                    <span class="d-none d-sm-inline">Logout</span>
                 </a>
                 {% else %}
                 <!-- Login & Register Buttons (When Logged Out) -->
-                <a href="{{ url_for('login') }}" class="btn btn-sm btn-outline-primary rounded-pill px-3 fw-semibold">Login</a>
-                <a href="{{ url_for('register') }}" class="btn btn-sm btn-auth-teal rounded-pill px-3 fw-semibold text-white">Register</a>
+                <a href="{{ url_for('login') }}" class="btn btn-secondary">Login</a>
+                <a href="{{ url_for('register') }}" class="btn btn-auth-teal text-white">Register</a>
                 {% endif %}
             </div>
         </div>
