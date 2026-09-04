@@ -235,11 +235,18 @@
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>
 
+    <!-- Floating Voice Assistant Status Pill (Visible when TTS is ON) -->
+    <div id="ttsFloatingIndicator" class="position-fixed bottom-0 start-50 translate-middle-x mb-4 shadow-lg rounded-pill px-3 py-2 d-none align-items-center gap-2" style="z-index: 1060; background: #0F2B48; color: #ffffff; border: 2px solid #2dd4bf;">
+        <span class="spinner-grow spinner-grow-sm text-info" role="status" aria-hidden="true"></span>
+        <span style="font-size: 13px; font-weight: 700;"><i class="bi bi-volume-up-fill me-1 text-info"></i>Voice Guidance Active</span>
+        <button type="button" class="btn btn-sm btn-outline-light rounded-pill px-2 py-0 ms-2" id="ttsFloatingMuteBtn" style="font-size: 11px;">Mute</button>
+    </div>
+
     <!-- Accessibility Scripts -->
     <script>
     document.addEventListener('DOMContentLoaded', () => {
         // 1. Colorblind / CVD Modes (Deuteranopia, Protanopia, Tritanopia, Default)
-        const cvdButtons = document.querySelectorAll('.cvd-select-btn');
+        const cvdButtons = document.querySelectorAll('.cvd-select-btn, .cvd-modal-option');
         let currentCvd = localStorage.getItem('cvd_mode') || 'default';
 
         function applyCvdMode(mode) {
@@ -255,11 +262,23 @@
                 localStorage.setItem('colorblind_mode', 'true');
             }
 
-            cvdButtons.forEach(btn => {
+            // Sync Navbar buttons
+            document.querySelectorAll('.cvd-select-btn').forEach(btn => {
                 if (btn.dataset.cvd === mode) {
                     btn.className = 'btn btn-sm btn-primary cvd-select-btn active';
                 } else {
                     btn.className = 'btn btn-sm btn-outline-secondary cvd-select-btn';
+                }
+            });
+
+            // Sync Modal Badges if present
+            document.querySelectorAll('.cvd-opt-badge').forEach(badge => {
+                if (badge.dataset.badgeFor === mode) {
+                    badge.textContent = 'Active';
+                    badge.className = 'badge rounded-pill bg-primary cvd-opt-badge';
+                } else {
+                    badge.textContent = 'Off';
+                    badge.className = 'badge rounded-pill bg-secondary cvd-opt-badge';
                 }
             });
         }
@@ -272,10 +291,10 @@
                 applyCvdMode(selectedMode);
                 if (ttsEnabled) {
                     const modeNames = {
-                        'default': 'Default vision theme restored',
-                        'deuteranopia': 'Deuteranopia green blind palette activated',
-                        'protanopia': 'Protanopia red blind palette activated',
-                        'tritanopia': 'Tritanopia blue blind palette activated'
+                        'default': 'Default color theme restored',
+                        'deuteranopia': 'Deuteranopia green-blind high-contrast palette activated',
+                        'protanopia': 'Protanopia red-blind high-contrast palette activated',
+                        'tritanopia': 'Tritanopia blue-blind high-contrast palette activated'
                     };
                     speakText(modeNames[selectedMode] || 'Colorblind mode updated');
                 }
@@ -317,6 +336,8 @@
         // 3. Text to Speech (TTS) Mode
         const ttsBtn = document.getElementById('ttsToggleBtn');
         const ttsBadge = document.getElementById('ttsBadge');
+        const ttsFloatingIndicator = document.getElementById('ttsFloatingIndicator');
+        const ttsFloatingMuteBtn = document.getElementById('ttsFloatingMuteBtn');
         let ttsEnabled = localStorage.getItem('tts_mode') === 'true';
 
         function speakText(text) {
@@ -324,6 +345,7 @@
             window.speechSynthesis.cancel();
             const utterance = new SpeechSynthesisUtterance(text);
             utterance.rate = 1.0;
+            utterance.pitch = 1.0;
             window.speechSynthesis.speak(utterance);
         }
 
@@ -331,6 +353,15 @@
             if (ttsBadge) {
                 ttsBadge.textContent = ttsEnabled ? 'On' : 'Off';
                 ttsBadge.className = ttsEnabled ? 'badge bg-primary rounded-pill' : 'badge bg-secondary rounded-pill';
+            }
+            if (ttsFloatingIndicator) {
+                if (ttsEnabled) {
+                    ttsFloatingIndicator.classList.remove('d-none');
+                    ttsFloatingIndicator.classList.add('d-flex');
+                } else {
+                    ttsFloatingIndicator.classList.remove('d-flex');
+                    ttsFloatingIndicator.classList.add('d-none');
+                }
             }
             localStorage.setItem('tts_mode', ttsEnabled ? 'true' : 'false');
         }
@@ -345,11 +376,55 @@
             });
         }
 
+        if (ttsFloatingMuteBtn) {
+            ttsFloatingMuteBtn.addEventListener('click', () => {
+                ttsEnabled = false;
+                updateTtsUI();
+                if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+            });
+        }
+
+        // Global TTS trigger on Focus & Hover
+        let hoverSpeechTimer = null;
+        let lastSpokenText = '';
+
+        function extractCleanText(target) {
+            if (!target) return '';
+            const ariaLabel = target.getAttribute('aria-label');
+            if (ariaLabel) return ariaLabel.trim();
+            const title = target.getAttribute('title');
+            if (title) return title.trim();
+            const placeholder = target.getAttribute('placeholder');
+            if (placeholder) return `Input field: ${placeholder.trim()}`;
+            const innerText = target.innerText;
+            if (innerText && innerText.length < 150) return innerText.replace(/\s+/g, ' ').trim();
+            return '';
+        }
+
         document.body.addEventListener('focusin', (e) => {
             if (!ttsEnabled) return;
-            const target = e.target;
-            const text = target.getAttribute('aria-label') || target.innerText || target.placeholder || target.title;
-            if (text && text.trim()) speakText(text.trim());
+            const text = extractCleanText(e.target);
+            if (text && text !== lastSpokenText) {
+                lastSpokenText = text;
+                speakText(text);
+            }
+        });
+
+        const interactiveSelectors = 'a, button, input, select, textarea, .home-mode-card, .home-txn-card, .cog-contact-btn, .cog-big-btn-teal, .cog-big-btn-navy';
+        
+        document.body.addEventListener('mouseover', (e) => {
+            if (!ttsEnabled) return;
+            const el = e.target.closest(interactiveSelectors);
+            if (!el) return;
+            
+            clearTimeout(hoverSpeechTimer);
+            hoverSpeechTimer = setTimeout(() => {
+                const text = extractCleanText(el);
+                if (text && text !== lastSpokenText) {
+                    lastSpokenText = text;
+                    speakText(text);
+                }
+            }, 300);
         });
     });
     </script>

@@ -361,29 +361,6 @@
     </div>
 </div>
 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    // 1. Balance Eye Visibility Toggle
-    const toggleEye = document.getElementById('toggleBalanceEye');
-    const balanceDisplay = document.getElementById('balanceAmountDisplay');
-    const eyeIcon = document.getElementById('eyeIcon');
-    const actualBalance = balanceDisplay.textContent;
-    let isHidden = false;
-
-    if (toggleEye && balanceDisplay) {
-        toggleEye.addEventListener('click', (e) => {
-            e.stopPropagation();
-            isHidden = !isHidden;
-            if (isHidden) {
-                balanceDisplay.textContent = '••••••••';
-                eyeIcon.className = 'bi bi-eye-slash';
-            } else {
-                balanceDisplay.textContent = actualBalance;
-                eyeIcon.className = 'bi bi-eye';
-            }
-        });
-    }
-
 <!-- Color Vision Deficiency (CVD) Selector Modal -->
 <div class="modal fade" id="cvdSelectorModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
