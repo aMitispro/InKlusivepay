@@ -10,18 +10,22 @@
 
             <!-- Top Header & Actions -->
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <a href="{{ url_for('home') }}" class="btn btn-sm btn-outline-secondary">
-                    <i class="bi bi-arrow-left me-1"></i>Home
+                <a href="{{ url_for('home') }}" class="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1 rounded-pill px-3">
+                    <img src="{{ url_for('static', filename='svg/home.svg') }}" width="16" height="16" alt="Home">
+                    <span>Home</span>
                 </a>
                 <div class="d-flex gap-2">
-                    <a href="{{ url_for('family_circle') }}" class="btn btn-sm btn-outline-info">
-                        <i class="bi bi-people me-1"></i>Family Circle
+                    <a href="{{ url_for('family_circle') }}" class="btn btn-sm btn-outline-info d-flex align-items-center gap-1 rounded-pill px-3">
+                        <img src="{{ url_for('static', filename='svg/family.svg') }}" width="16" height="16" alt="Family" style="filter: brightness(0) invert(0.4);">
+                        <span>Family Circle</span>
                     </a>
-                    <a href="{{ url_for('pay') }}" class="btn btn-sm btn-outline-primary">
-                        <i class="bi bi-send me-1"></i>Pay
+                    <a href="{{ url_for('pay') }}" class="btn btn-sm btn-auth-teal text-white d-flex align-items-center gap-1 rounded-pill px-3">
+                        <img src="{{ url_for('static', filename='svg/send.svg') }}" width="15" height="15" alt="Pay" style="filter: brightness(0) invert(1);">
+                        <span>Pay</span>
                     </a>
-                    <a href="{{ url_for('deposit') }}" class="btn btn-sm btn-primary">
-                        <i class="bi bi-plus-circle me-1"></i>Add Money
+                    <a href="{{ url_for('deposit') }}" class="btn btn-sm btn-outline-primary d-flex align-items-center gap-1 rounded-pill px-3">
+                        <img src="{{ url_for('static', filename='svg/add.svg') }}" width="15" height="15" alt="Add Money">
+                        <span>Add Money</span>
                     </a>
                 </div>
             </div>

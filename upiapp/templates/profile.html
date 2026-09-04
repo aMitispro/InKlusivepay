@@ -9,11 +9,13 @@
         <div class="col-md-7 col-lg-5">
 
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <a href="{{ url_for('home') }}" class="btn btn-sm btn-outline-secondary rounded-pill px-3">
-                    <i class="bi bi-arrow-left me-1"></i>Home
+                <a href="{{ url_for('home') }}" class="btn btn-sm btn-outline-secondary rounded-pill px-3 d-flex align-items-center gap-1">
+                    <img src="{{ url_for('static', filename='svg/home.svg') }}" width="15" height="15" alt="Home">
+                    <span>Home</span>
                 </a>
-                <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-2 rounded-pill">
-                    <i class="bi bi-shield-check me-1"></i>Active UPI Account
+                <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-2 rounded-pill d-flex align-items-center gap-1">
+                    <img src="{{ url_for('static', filename='svg/secure.svg') }}" width="14" height="14" alt="Active">
+                    <span>Active UPI Account</span>
                 </span>
             </div>
 

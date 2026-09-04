@@ -9,11 +9,13 @@
         <div class="col-md-8 col-lg-6">
 
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <a href="{{ url_for('home') }}" class="btn btn-sm btn-outline-secondary rounded-pill px-3">
-                    <i class="bi bi-arrow-left me-1"></i>Home
+                <a href="{{ url_for('home') }}" class="btn btn-sm btn-outline-secondary rounded-pill px-3 d-flex align-items-center gap-1">
+                    <img src="{{ url_for('static', filename='svg/home.svg') }}" width="15" height="15" alt="Home">
+                    <span>Home</span>
                 </a>
-                <a href="{{ url_for('profile') }}" class="btn btn-sm btn-outline-secondary rounded-pill px-3">
-                    <i class="bi bi-qr-code me-1"></i>My QR
+                <a href="{{ url_for('profile') }}" class="btn btn-sm btn-outline-secondary rounded-pill px-3 d-flex align-items-center gap-1">
+                    <img src="{{ url_for('static', filename='svg/qr.svg') }}" width="15" height="15" alt="QR">
+                    <span>My QR</span>
                 </a>
             </div>
 
