@@ -341,7 +341,22 @@ def google_callback():
         flash("Google login failed. Check authorized redirect URI in Google Cloud Console.", "danger")
         return redirect(url_for("login"))
 
-    userinfo = token.get("userinfo") or {}
+    userinfo = token.get("userinfo")
+    if not userinfo and "id_token" in token:
+        try:
+            userinfo = oauth.inclusiv_client.parse_id_token(token)
+        except Exception:
+            userinfo = None
+    if not userinfo:
+        try:
+            userinfo_resp = oauth.inclusiv_client.get("https://www.googleapis.com/oauth2/v3/userinfo", token=token)
+            if userinfo_resp and userinfo_resp.status_code == 200:
+                userinfo = userinfo_resp.json()
+        except Exception:
+            pass
+    if not userinfo:
+        userinfo = {}
+
     email = (userinfo.get("email") or "").strip().lower()
     if not email:
         flash("Google did not return an email address. Allow email access and try again.", "danger")

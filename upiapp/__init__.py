@@ -18,7 +18,7 @@ load_dotenv(_PKG_DIR / ".env")
 load_dotenv(_ROOT_DIR / ".env")
 
 app = Flask(__name__)
-app.config["SECRET_KEY"] = getenv("SECRET_KEY")
+app.config["SECRET_KEY"] = getenv("SECRET_KEY") or "inklusivepay-development-secret-key-2026"
 app.config["MAIL_SERVER"] = "smtp.gmail.com"
 app.config["MAIL_PORT"] = 587
 app.config["MAIL_USE_TLS"] = True
