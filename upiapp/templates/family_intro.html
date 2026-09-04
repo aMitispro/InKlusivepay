@@ -1,0 +1,238 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Set up your Family Circle - InKlusivepay
+{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
+
+<style>
+.family-page-container {
+    max-width: 1060px;
+    margin: 1.5rem auto 3rem auto;
+}
+.family-intro-card {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+    padding: 2.5rem;
+    box-shadow: 0 4px 20px rgba(15, 43, 72, 0.04);
+}
+.safety-feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 1rem 0;
+    border-bottom: 1px solid #f1f5f9;
+}
+.safety-feature-item:last-child {
+    border-bottom: none;
+}
+.feature-icon-circle {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background-color: #f0fdfa;
+    color: #0b707e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    flex-shrink: 0;
+}
+.btn-family-primary {
+    background-color: #0b707e;
+    border: 1px solid #0b707e;
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 0.75rem 1.25rem;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+.btn-family-primary:hover {
+    background-color: #095964;
+    border-color: #095964;
+    color: #ffffff;
+}
+.btn-family-secondary {
+    background-color: transparent;
+    border: 1.5px solid #0b707e;
+    color: #0b707e;
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 0.7rem 1.25rem;
+    border-radius: 10px;
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+.btn-family-secondary:hover {
+    background-color: #f0fdfa;
+    color: #095964;
+}
+</style>
+
+<div class="container family-page-container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="fw-bold text-dark mb-0">Family Circle</h3>
+        <div class="text-muted small">
+            <i class="bi bi-globe me-1"></i>English ∨ &nbsp;|&nbsp; <i class="bi bi-question-circle me-1"></i>Help
+        </div>
+    </div>
+
+    <div class="row align-items-center g-4 g-lg-5">
+        <!-- Left Side: Title, Subtitle, Family Illustration -->
+        <div class="col-lg-6">
+            <div class="pe-lg-3">
+                <h1 class="display-6 fw-bold text-dark mb-2" style="font-size: 2.4rem;">Set up your<br>Family Circle</h1>
+                <p class="text-muted fs-6 mb-4">Add someone you trust to help protect important transfers.</p>
+
+                <div class="text-center p-3 rounded-4" style="background-color: #faf8f5;">
+                    <img src="{{ url_for('static', filename='img/family_intro_banner.png') }}" class="img-fluid rounded-3 shadow-sm" style="max-height: 380px; object-fit: contain;" alt="Family Circle Protection">
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side: How It Keeps You Safe Card (Image 1) -->
+        <div class="col-lg-6">
+            <div class="family-intro-card">
+                <h4 class="fw-bold text-dark mb-4">How it keeps you safe</h4>
+
+                <!-- Feature 1 -->
+                <div class="safety-feature-item">
+                    <div class="feature-icon-circle">
+                        <i class="bi bi-person-fill"></i>
+                    </div>
+                    <div>
+                        <h6 class="fw-bold text-dark mb-1">You stay in control</h6>
+                        <p class="text-muted small mb-0">Your money and account remain yours.</p>
+                    </div>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="safety-feature-item">
+                    <div class="feature-icon-circle">
+                        <i class="bi bi-lightning-charge-fill"></i>
+                    </div>
+                    <div>
+                        <h6 class="fw-bold text-dark mb-1">Instant for small transfers</h6>
+                        <p class="text-muted small mb-0">Everyday payments stay quick and easy.</p>
+                    </div>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="safety-feature-item">
+                    <div class="feature-icon-circle">
+                        <i class="bi bi-shield-check"></i>
+                    </div>
+                    <div>
+                        <h6 class="fw-bold text-dark mb-1">Approval for larger transfers</h6>
+                        <p class="text-muted small mb-0">Your trusted contact confirms unusual amounts.</p>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="d-grid gap-2 mt-4">
+                    <button type="button" class="btn-family-primary" data-bs-toggle="modal" data-bs-target="#createFamilyModal">
+                        <span>Add a trusted contact</span>
+                        <i class="bi bi-arrow-right"></i>
+                    </button>
+                    <button type="button" class="btn btn-outline-secondary py-2 rounded-3 fw-semibold" data-bs-toggle="modal" data-bs-target="#joinFamilyModal">
+                        <i class="bi bi-person-plus me-1"></i>Join with Family Code
+                    </button>
+                    <a href="{{ url_for('home') }}" class="btn-family-secondary">
+                        Maybe later
+                    </a>
+                </div>
+
+                <!-- Footer info -->
+                <div class="text-center mt-3 text-muted small">
+                    <i class="bi bi-lock-fill text-teal me-1"></i>You can change or pause this anytime.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal 1: Create Family Circle -->
+<div class="modal fade" id="createFamilyModal" tabindex="-1" aria-labelledby="createFamilyModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4 border-0 shadow">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title fw-bold" id="createFamilyModalLabel">Create your Family Circle</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="POST" action="{{ url_for('create_family') }}">
+                <div class="modal-body">
+                    <p class="text-muted small">As the primary guardian/admin, you can set daily spending limits and protect family members from unexpected transfers.</p>
+                    <div class="mb-3">
+                        <label class="form-label small fw-semibold">Family Circle Name</label>
+                        <input type="text" name="family_name" class="form-control" placeholder="e.g. {{ current_user.username|capitalize }}'s Family" value="{{ current_user.username|capitalize }}'s Family" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-semibold">Your Role / Relation</label>
+                        <select name="relation" class="form-select">
+                            <option value="Parent (Primary Guardian)" selected>Parent (Primary Guardian)</option>
+                            <option value="Adult Family Admin">Adult Family Admin</option>
+                            <option value="Guardian">Guardian</option>
+                            <option value="Family Member">Family Member</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-semibold">Daily Transfer Safety Limit (₹)</label>
+                        <input type="number" name="daily_limit" class="form-control" value="5000" min="100" max="100000" step="100" required>
+                        <small class="text-muted">Transfers above this threshold will require guardian approval.</small>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary px-4">Create Family Circle</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal 2: Join Family Circle -->
+<div class="modal fade" id="joinFamilyModal" tabindex="-1" aria-labelledby="joinFamilyModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4 border-0 shadow">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title fw-bold" id="joinFamilyModalLabel">Join a Family Circle</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="POST" action="{{ url_for('join_family') }}">
+                <div class="modal-body">
+                    <p class="text-muted small">Enter the 6-character Family Invite Code or the Guardian's username.</p>
+                    <div class="mb-3">
+                        <label class="form-label small fw-semibold">Invite Code or Guardian Username</label>
+                        <input type="text" name="invite_identifier" class="form-control" placeholder="e.g. FAM824 or guardian_user" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-semibold">Your Relation to Family</label>
+                        <select name="relation" class="form-select">
+                            <option value="Son">Son</option>
+                            <option value="Daughter">Daughter</option>
+                            <option value="Elder / Grandparent">Elder / Grandparent</option>
+                            <option value="Spouse">Spouse</option>
+                            <option value="Family Member" selected>Family Member</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary px-4">Join Circle</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

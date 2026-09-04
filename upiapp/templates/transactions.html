@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+{% block title %}
+    {{ title }} - InKlusivepay
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-10 col-lg-9">
+
+            <!-- Top Header & Actions -->
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <a href="{{ url_for('home') }}" class="btn btn-sm btn-outline-secondary">
+                    <i class="bi bi-arrow-left me-1"></i>Home
+                </a>
+                <div class="d-flex gap-2">
+                    <a href="{{ url_for('family_circle') }}" class="btn btn-sm btn-outline-info">
+                        <i class="bi bi-people me-1"></i>Family Circle
+                    </a>
+                    <a href="{{ url_for('pay') }}" class="btn btn-sm btn-outline-primary">
+                        <i class="bi bi-send me-1"></i>Pay
+                    </a>
+                    <a href="{{ url_for('deposit') }}" class="btn btn-sm btn-primary">
+                        <i class="bi bi-plus-circle me-1"></i>Add Money
+                    </a>
+                </div>
+            </div>
+
+            <!-- Page Summary Card -->
+            <div class="card border rounded-3 p-3 mb-3 bg-body-tertiary">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h4 class="fw-bold mb-0">Transaction History</h4>
+                        <small class="text-muted">Total {{ total_count }} transaction records</small>
+                    </div>
+                    <div class="text-end">
+                        <small class="text-muted d-block">Wallet Balance</small>
+                        <span class="fs-5 fw-bold text-primary">₹{{ "%.2f"|format(current_balance) }}</span>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between pt-2 mt-2 border-top small">
+                    <div>
+                        <span class="text-muted">Total Sent: </span>
+                        <strong class="text-danger">₹{{ "%.2f"|format(total_sent) }}</strong>
+                    </div>
+                    <div>
+                        <span class="text-muted">Total Received: </span>
+                        <strong class="text-success">₹{{ "%.2f"|format(total_received) }}</strong>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Transaction Detailed Table/List -->
+            <div class="card border rounded-4 overflow-hidden mb-4 bg-white shadow-sm">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center py-2 px-3 border-bottom">
+                    <span class="fw-semibold small text-dark">All Transactions (Page {{ page }} of {{ total_pages }})</span>
+                    <span class="badge bg-teal text-white" style="background-color: #0F8280 !important;">10 records / page</span>
+                </div>
+
+                {% if transactions %}
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light small">
+                            <tr>
+                                <th scope="col" class="ps-3">Txn ID</th>
+                                <th scope="col">Date & Time</th>
+                                <th scope="col">Counterparty</th>
+                                <th scope="col">Type</th>
+                                <th scope="col">Note</th>
+                                <th scope="col">Status</th>
+                                <th scope="col" class="text-end pe-3">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for t in transactions %}
+                            <tr>
+                                <td class="ps-3 fw-bold text-secondary small">#{{ t.id }}</td>
+                                <td class="small text-muted">
+                                    {{ t.created_on.strftime('%b %d, %Y') }}<br>
+                                    <span style="font-size: 0.72rem;">{{ t.created_on.strftime('%I:%M:%S %p') }}</span>
+                                </td>
+                                <td>
+                                    <span class="fw-semibold small text-dark">{{ t.counterparty }}</span>
+                                </td>
+                                <td>
+                                    <span class="badge {% if t.direction == 'DEPOSIT' %}bg-primary-subtle text-primary border border-primary-subtle{% elif t.direction == 'RECEIVED' %}bg-success-subtle text-success border border-success-subtle{% else %}bg-danger-subtle text-danger border border-danger-subtle{% endif %}">
+                                        {{ t.direction }}
+                                    </span>
+                                </td>
+                                <td class="small text-muted text-truncate" style="max-width: 150px;">
+                                    {{ t.note if t.note else '—' }}
+                                </td>
+                                <td>
+                                    <span class="badge bg-light text-success border border-success-subtle small">{{ t.status }}</span>
+                                </td>
+                                <td class="text-end pe-3">
+                                    <strong class="{% if t.direction == 'SENT' %}text-danger{% else %}text-success{% endif %}">
+                                        {% if t.direction == 'SENT' %}-{% else %}+{% endif %}₹{{ "%.2f"|format(t.amount) }}
+                                    </strong>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination Navigation -->
+                {% if total_pages > 1 %}
+                <div class="card-footer bg-body py-2 px-3 d-flex justify-content-between align-items-center">
+                    <div class="small text-muted">
+                        Showing page {{ page }} of {{ total_pages }} ({{ total_count }} total records)
+                    </div>
+                    <nav aria-label="Transaction history pagination">
+                        <ul class="pagination pagination-sm mb-0">
+                            <!-- Previous -->
+                            <li class="page-item {% if not has_prev %}disabled{% endif %}">
+                                <a class="page-link" href="{{ url_for('transactions', page=page-1) if has_prev else '#' }}" tabindex="-1">
+                                    <i class="bi bi-chevron-left me-1"></i>Prev
+                                </a>
+                            </li>
+
+                            <!-- Page Numbers -->
+                            {% for p in range(1, total_pages + 1) %}
+                                {% if p == page %}
+                                    <li class="page-item active"><span class="page-link">{{ p }}</span></li>
+                                {% elif p <= 3 or p >= total_pages - 2 or (p >= page - 1 and p <= page + 1) %}
+                                    <li class="page-item"><a class="page-link" href="{{ url_for('transactions', page=p) }}">{{ p }}</a></li>
+                                {% elif p == 4 or p == total_pages - 3 %}
+                                    <li class="page-item disabled"><span class="page-link">…</span></li>
+                                {% endif %}
+                            {% endfor %}
+
+                            <!-- Next -->
+                            <li class="page-item {% if not has_next %}disabled{% endif %}">
+                                <a class="page-link" href="{{ url_for('transactions', page=page+1) if has_next else '#' }}">
+                                    Next<i class="bi bi-chevron-right ms-1"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                {% endif %}
+
+                {% else %}
+                <div class="text-center py-5 text-muted small">
+                    <i class="bi bi-receipt fs-1 text-secondary opacity-50 d-block mb-2"></i>
+                    <p class="mb-2">No transactions recorded yet.</p>
+                    <div class="d-flex justify-content-center gap-2">
+                        <a href="{{ url_for('pay') }}" class="btn btn-primary btn-sm">Send Money</a>
+                        <a href="{{ url_for('deposit') }}" class="btn btn-outline-primary btn-sm">Add Funds</a>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

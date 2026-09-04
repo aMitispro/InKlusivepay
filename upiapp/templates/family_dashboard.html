@@ -1,0 +1,522 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Family Circle - InKlusivepay
+{% endblock %}
+
+{% block content %}
+<style>
+.family-dash-container {
+    max-width: 1080px;
+    margin: 1.5rem auto 3.5rem auto;
+}
+
+/* Active Banner matching Image 2 */
+.family-active-banner {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 1.25rem 1.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 10px rgba(15, 43, 72, 0.03);
+    margin-bottom: 2rem;
+}
+.banner-shield-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    background-color: #0b707e;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    flex-shrink: 0;
+}
+.badge-protected {
+    border: 1.5px solid #0b707e;
+    color: #0b707e;
+    background-color: #f0fdfa;
+    border-radius: 10px;
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Section Cards */
+.section-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #0f2b48;
+}
+
+.contact-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 1.1rem 1.25rem;
+    margin-bottom: 0.85rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 8px rgba(15, 43, 72, 0.02);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.contact-card:hover {
+    box-shadow: 0 4px 14px rgba(15, 43, 72, 0.06);
+}
+
+.contact-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: #0f2b48;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.badge-primary-guardian {
+    border: 1px solid #99f6e4;
+    color: #0d9488;
+    background-color: #f0fdfa;
+    border-radius: 8px;
+    padding: 0.35rem 0.75rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* Limit Card */
+.limit-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 1.75rem;
+    box-shadow: 0 2px 10px rgba(15, 43, 72, 0.03);
+}
+
+.limit-display-amount {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #0f2b48;
+    text-align: center;
+    margin: 0.5rem 0 1.25rem 0;
+}
+
+.custom-slider-range {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 6px;
+    border-radius: 5px;
+    background: #e2e8f0;
+    outline: none;
+}
+.custom-slider-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #ffffff;
+    border: 5px solid #0b707e;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.limit-alert-box {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-top: 1.25rem;
+}
+
+.btn-test-approval {
+    background-color: #0b707e;
+    border: 1px solid #0b707e;
+    color: #ffffff;
+    font-weight: 600;
+    padding: 0.75rem 1.25rem;
+    border-radius: 10px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-decoration: none;
+    margin-top: 1rem;
+    transition: all 0.2s ease;
+}
+.btn-test-approval:hover {
+    background-color: #095964;
+    color: #ffffff;
+}
+
+.bottom-control-pill {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 0.85rem 1.25rem;
+    margin-top: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+</style>
+
+<div class="container family-dash-container">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="fw-bold text-dark mb-0">Family Circle</h2>
+        <div class="text-muted small">
+            <i class="bi bi-globe me-1"></i>English ∨ &nbsp;|&nbsp; <i class="bi bi-question-circle me-1"></i>Help
+        </div>
+    </div>
+
+    <!-- Active Banner (Image 2 Top) -->
+    <div class="family-active-banner">
+        <div class="d-flex align-items-center gap-3">
+            <div class="banner-shield-icon">
+                <i class="bi bi-shield-check"></i>
+            </div>
+            <div>
+                <h5 class="fw-bold text-dark mb-1">
+                    {{ family.name }} is active
+                    {% if not family.is_active %}<span class="badge bg-warning text-dark ms-2">Paused</span>{% endif %}
+                </h5>
+                <p class="text-muted small mb-0">Extra protection for important transfers • Invite Code: <strong class="text-dark">{{ family.invite_code }}</strong></p>
+            </div>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+            <span class="badge-protected">
+                <i class="bi bi-shield-lock-fill"></i>
+                <span>Protected</span>
+            </span>
+        </div>
+    </div>
+
+    <!-- Pending Transfer Approvals for Guardian (if any) -->
+    {% if pending_requests %}
+    <div class="card border-warning bg-warning-subtle rounded-4 p-3 mb-4 shadow-sm">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <h6 class="fw-bold text-warning-emphasis mb-0">
+                <i class="bi bi-exclamation-triangle-fill me-1"></i>Pending Transfer Approvals ({{ pending_requests|length }})
+            </h6>
+            <small class="text-muted">A family member wants to transfer above safety limit</small>
+        </div>
+        <div class="list-group list-group-flush">
+            {% for req in pending_requests %}
+            <div class="list-group-item bg-transparent px-0 py-2 d-flex flex-wrap justify-content-between align-items-center gap-2">
+                <div>
+                    <strong>{{ req.requester.username }}</strong> requested to send <strong class="text-danger">₹{{ "%.2f"|format(req.amount) }}</strong> to <strong>{{ req.recipient }}</strong>
+                    {% if req.note %}<span class="text-muted small d-block">Note: {{ req.note }}</span>{% endif %}
+                    <small class="text-muted">{{ req.created_at.strftime('%b %d, %I:%M %p') }}</small>
+                </div>
+                {% if is_admin %}
+                <div class="d-flex gap-2">
+                    <form method="POST" action="{{ url_for('approve_transfer', request_id=req.id) }}" class="d-inline">
+                        <button type="submit" class="btn btn-sm btn-success px-3 fw-semibold">
+                            <i class="bi bi-check-lg me-1"></i>Approve Transfer
+                        </button>
+                    </form>
+                    <form method="POST" action="{{ url_for('reject_transfer', request_id=req.id) }}" class="d-inline">
+                        <button type="submit" class="btn btn-sm btn-outline-danger px-3">Reject</button>
+                    </form>
+                </div>
+                {% else %}
+                <span class="badge bg-secondary">Awaiting Guardian Review</span>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- 2 Column Layout (Image 2) -->
+    <div class="row g-4">
+        
+        <!-- Left: Trusted Contacts -->
+        <div class="col-lg-6">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="section-title mb-0">Trusted contacts</h5>
+                {% if is_admin %}
+                <button class="btn btn-sm btn-outline-secondary rounded-pill px-3" data-bs-toggle="modal" data-bs-target="#manageContactsModal">
+                    <i class="bi bi-gear me-1"></i>Manage
+                </button>
+                {% endif %}
+            </div>
+
+            <!-- Contact List -->
+            <div class="trusted-contacts-list">
+                <!-- Admin / Primary Guardian -->
+                <div class="contact-card">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="contact-avatar">
+                            {{ family.admin.username[0]|upper }}
+                        </div>
+                        <div>
+                            <h6 class="fw-bold text-dark mb-0">{{ family.admin.username|capitalize }}</h6>
+                            <small class="text-muted d-block">
+                                {% for m in members if m.user_id == family.admin_id %}
+                                    {{ m.relation }} • Primary guardian
+                                {% else %}
+                                    Admin • Primary guardian
+                                {% endfor %}
+                            </small>
+                            <small class="text-success fw-semibold" style="font-size: 0.78rem;">
+                                <i class="bi bi-dot"></i>Online
+                            </small>
+                        </div>
+                    </div>
+                    <div>
+                        <span class="badge-primary-guardian">
+                            <i class="bi bi-star-fill text-warning"></i> Primary
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Other Members -->
+                {% for member in members if member.user_id != family.admin_id %}
+                <div class="contact-card">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="contact-avatar" style="background-color: #0b707e;">
+                            {{ member.user.username[0]|upper }}
+                        </div>
+                        <div>
+                            <h6 class="fw-bold text-dark mb-0">{{ member.user.username|capitalize }}</h6>
+                            <small class="text-muted d-block">{{ member.relation }} • {{ member.role|capitalize }}</small>
+                            <small class="text-secondary fw-semibold" style="font-size: 0.78rem;">
+                                <i class="bi bi-dot"></i>Available
+                            </small>
+                        </div>
+                    </div>
+                    <div>
+                        {% if is_admin %}
+                        <button class="btn btn-sm btn-light border text-danger" title="Remove member" onclick="confirmRemoveMember({{ member.id }}, '{{ member.user.username }}')">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+
+                <!-- Add Contact Quick Action (Admin Only) -->
+                {% if is_admin %}
+                <div class="mt-3">
+                    <button class="btn btn-outline-primary btn-sm w-100 py-2 rounded-3 fw-semibold" data-bs-toggle="modal" data-bs-target="#addMemberModal">
+                        <i class="bi bi-person-plus-fill me-1"></i>Add Trusted Member
+                    </button>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Right: Transfer Safety Limit (Image 2 Right) -->
+        <div class="col-lg-6">
+            <h5 class="section-title mb-3">Transfer safety limit</h5>
+
+            <div class="limit-card">
+                <p class="text-muted small text-center mb-1">Transfers below this amount are instant</p>
+                <div class="limit-display-amount" id="limitDisplay">₹{{ "{:,.0f}".format(family.daily_limit) }}</div>
+
+                <!-- Interactive Range Slider -->
+                <div class="px-2">
+                    <input type="range" class="custom-slider-range" id="limitSlider" min="0" max="25000" step="500" value="{{ family.daily_limit|int }}" {% if not is_admin %}disabled{% endif %}>
+                    <div class="d-flex justify-content-between text-muted small fw-semibold mt-1">
+                        <span>₹0</span>
+                        <span>₹25,000</span>
+                    </div>
+                </div>
+
+                <!-- Above threshold info box -->
+                <div class="limit-alert-box">
+                    <div class="text-teal fs-4">
+                        <i class="bi bi-shield-exclamation text-teal" style="color: #0b707e;"></i>
+                    </div>
+                    <div>
+                        <h6 class="fw-bold text-dark mb-1" id="limitBoxTitle">Above ₹{{ "{:,.0f}".format(family.daily_limit) }} requires guardian approval</h6>
+                        <p class="text-muted small mb-0">You will always be shown who must approve it.</p>
+                    </div>
+                </div>
+
+                <!-- Admin Save Limit Button (or live updated) -->
+                {% if is_admin %}
+                <form method="POST" action="{{ url_for('set_family_limit') }}" id="limitForm" class="mt-3">
+                    <input type="hidden" name="daily_limit" id="limitFormInput" value="{{ family.daily_limit }}">
+                    <button type="submit" class="btn btn-outline-primary btn-sm w-100 py-2 rounded-3 fw-semibold" id="saveLimitBtn" style="display: none;">
+                        <i class="bi bi-check2-circle me-1"></i>Save New Safety Limit
+                    </button>
+                </form>
+                {% endif %}
+
+                <!-- Test approval flow button -->
+                <a href="{{ url_for('pay') }}" class="btn-test-approval">
+                    <span>Test approval flow</span>
+                    <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Bottom Control Banner (Image 2 Bottom) -->
+    <div class="bottom-control-pill">
+        <div class="d-flex align-items-center gap-2 text-muted small">
+            <div class="rounded-circle d-flex align-items-center justify-content-center text-white" style="width: 28px; height: 28px; background-color: #0b707e;">
+                <i class="bi bi-lock-fill" style="font-size: 0.85rem;"></i>
+            </div>
+            <span>You stay in control. You can pause Family Circle anytime.</span>
+        </div>
+        {% if is_admin %}
+        <form method="POST" action="{{ url_for('toggle_family_status') }}" class="d-inline">
+            <button type="submit" class="btn btn-sm {% if family.is_active %}btn-outline-secondary{% else %}btn-success{% endif %} rounded-pill px-3">
+                {% if family.is_active %}<i class="bi bi-pause-circle me-1"></i>Pause Circle{% else %}<i class="bi bi-play-circle me-1"></i>Resume Circle{% endif %}
+            </button>
+        </form>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Modal: Add Member (Admin) -->
+<div class="modal fade" id="addMemberModal" tabindex="-1" aria-labelledby="addMemberModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4 border-0 shadow">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title fw-bold" id="addMemberModalLabel">Add Family Member</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="POST" action="{{ url_for('add_family_member') }}">
+                <div class="modal-body">
+                    <p class="text-muted small">Enter the username or email of the person you want to protect or add to your Family Circle.</p>
+                    <div class="mb-3">
+                        <label class="form-label small fw-semibold">Username or Email</label>
+                        <input type="text" name="member_identifier" class="form-control" placeholder="e.g. rahul or rahul@gmail.com" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-semibold">Relation</label>
+                        <select name="relation" class="form-select">
+                            <option value="Daughter">Daughter</option>
+                            <option value="Son">Son</option>
+                            <option value="Elder / Parent">Elder / Parent</option>
+                            <option value="Spouse">Spouse</option>
+                            <option value="Backup Guardian">Backup Guardian</option>
+                            <option value="Family Member" selected>Family Member</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-semibold">Role</label>
+                        <select name="role" class="form-select">
+                            <option value="MEMBER" selected>Member (Protected by Safety Limit)</option>
+                            <option value="BACKUP_GUARDIAN">Backup Guardian (Can Approve Transfers)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary px-4">Add Member</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Manage Family Settings (Admin) -->
+<div class="modal fade" id="manageContactsModal" tabindex="-1" aria-labelledby="manageContactsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4 border-0 shadow">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title fw-bold" id="manageContactsModalLabel">Manage Family Circle</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="p-3 bg-light rounded-3 mb-3">
+                    <small class="text-muted d-block">Family Invite Code</small>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h4 class="fw-bold mb-0 text-primary">{{ family.invite_code }}</h4>
+                        <button class="btn btn-sm btn-outline-secondary" onclick="navigator.clipboard.writeText('{{ family.invite_code }}'); alert('Invite code copied to clipboard!');">
+                            <i class="bi bi-clipboard me-1"></i>Copy
+                        </button>
+                    </div>
+                    <small class="text-muted">Share this code with family members to let them join instantly.</small>
+                </div>
+                <hr>
+                <h6 class="fw-bold mb-2">Member List ({{ members|length }})</h6>
+                <div class="list-group list-group-flush mb-3">
+                    {% for m in members %}
+                    <div class="list-group-item px-0 py-2 d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>{{ m.user.username }}</strong>
+                            <small class="text-muted d-block">{{ m.relation }} ({{ m.role }})</small>
+                        </div>
+                        {% if m.user_id != family.admin_id %}
+                        <form method="POST" action="{{ url_for('remove_family_member', member_id=m.id) }}">
+                            <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Remove {{ m.user.username }} from Family Circle?');">
+                                Remove
+                            </button>
+                        </form>
+                        {% else %}
+                        <span class="badge bg-primary">Admin</span>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="modal-footer border-0 pt-0">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const slider = document.getElementById('limitSlider');
+    const display = document.getElementById('limitDisplay');
+    const boxTitle = document.getElementById('limitBoxTitle');
+    const formInput = document.getElementById('limitFormInput');
+    const saveBtn = document.getElementById('saveLimitBtn');
+
+    if (slider) {
+        slider.addEventListener('input', (e) => {
+            const val = parseInt(e.target.value);
+            const formatted = '₹' + val.toLocaleString('en-IN');
+            display.textContent = formatted;
+            boxTitle.textContent = `Above ${formatted} requires guardian approval`;
+            if (formInput) formInput.value = val;
+            if (saveBtn) saveBtn.style.display = 'block';
+        });
+
+        slider.addEventListener('change', () => {
+            // Auto submit update if admin
+            if (document.getElementById('limitForm')) {
+                document.getElementById('limitForm').submit();
+            }
+        });
+    }
+});
+
+function confirmRemoveMember(memberId, username) {
+    if (confirm(`Are you sure you want to remove ${username} from the Family Circle?`)) {
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = `/family/remove-member/${memberId}`;
+        document.body.appendChild(form);
+        form.submit();
+    }
+}
+</script>
+{% endblock %}

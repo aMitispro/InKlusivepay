@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% block title %}
+    My Profile & QR Code - InKlusivepay
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-7 col-lg-5">
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <a href="{{ url_for('home') }}" class="btn btn-sm btn-outline-secondary rounded-pill px-3">
+                    <i class="bi bi-arrow-left me-1"></i>Home
+                </a>
+                <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-2 rounded-pill">
+                    <i class="bi bi-shield-check me-1"></i>Active UPI Account
+                </span>
+            </div>
+
+            <!-- Profile Info Card -->
+            <div class="card border rounded-4 p-4 mb-3 text-center bg-white shadow-sm">
+                <div class="rounded-circle text-white d-inline-flex justify-content-center align-items-center mx-auto mb-2 shadow-sm"
+                     style="width: 64px; height: 64px; font-size: 1.75rem; font-weight: bold; background: linear-gradient(135deg, #0f2b48, #0b707e);">
+                    {{ current_user.username[0]|upper }}
+                </div>
+                <h4 class="fw-bold mb-0 text-dark">{{ current_user.username|capitalize }}</h4>
+                <p class="text-muted small mb-2">{{ current_user.email }}</p>
+                <div class="d-flex justify-content-center align-items-center gap-2">
+                    <span class="badge bg-light border text-dark small px-3 py-2 rounded-pill">
+                        UPI ID: <span id="upiIdText" class="fw-bold">{{ upi_id }}</span>
+                    </span>
+                    <button class="btn btn-sm btn-outline-secondary rounded-pill py-1 px-2" id="copyUpiBtn" title="Copy UPI ID" type="button">
+                        <i class="bi bi-clipboard" id="copyUpiIcon"></i>
+                    </button>
+                </div>
+                <div id="copyAlert" class="text-success small fw-semibold d-none mt-2">
+                    <i class="bi bi-check2-circle me-1"></i>UPI ID copied to clipboard!
+                </div>
+            </div>
+
+            <!-- Personal QR Code to Receive Payments (Saved in assets/qr-images) -->
+            <div class="card border rounded-4 p-4 mb-3 text-center bg-white shadow-sm">
+                <h5 class="fw-bold mb-1 text-dark">Personal Receive QR Code</h5>
+                <p class="text-muted small mb-3">Scan with InKlusivepay or any UPI app to transfer instantly.</p>
+
+                <!-- Unique Server-Generated QR Image -->
+                <div class="p-3 bg-white border rounded-4 d-inline-block mx-auto mb-3 shadow-sm">
+                    {% if qr_image %}
+                    <img src="{{ url_for('static', filename='assets/qr-images/' + qr_image) }}" id="userQrImg" class="img-fluid rounded-3" style="max-width: 220px; max-height: 220px;" alt="Personal UPI QR Code">
+                    {% else %}
+                    <canvas id="qrCanvas" style="max-width: 200px; max-height: 200px;"></canvas>
+                    {% endif %}
+                </div>
+
+                <div class="d-flex justify-content-center gap-2 mb-2">
+                    <a href="{{ url_for('static', filename='assets/qr-images/' + qr_image) if qr_image else '#' }}" download="InKlusivepay-{{ current_user.username }}-QR.png" class="btn btn-auth-navy btn-sm px-3 rounded-pill" id="downloadQrBtn">
+                        <i class="bi bi-download me-1"></i>Save QR Image
+                    </a>
+                    <button type="button" class="btn btn-outline-secondary btn-sm rounded-pill px-3" id="copyLinkBtn">
+                        <i class="bi bi-share me-1"></i>Copy Pay Link
+                    </button>
+                </div>
+                <div id="linkCopyAlert" class="text-success small fw-semibold d-none mt-1">
+                    <i class="bi bi-check2-circle me-1"></i>Personal payment link copied!
+                </div>
+            </div>
+
+            <!-- Security & Transaction PIN Card -->
+            <div class="card border rounded-4 p-3 mb-4 bg-white shadow-sm">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <div>
+                        <h6 class="fw-bold mb-0 text-dark">Security PIN</h6>
+                        <small class="text-muted">4-Digit PIN required before making payments</small>
+                    </div>
+                    {% if has_pin %}
+                    <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill">PIN Set</span>
+                    {% else %}
+                    <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle rounded-pill">Not Set</span>
+                    {% endif %}
+                </div>
+                <form method="POST" action="{{ url_for('set_transaction_pin') }}" class="d-flex gap-2 mt-2">
+                    <input type="password" name="pin" class="form-control form-control-sm text-center fw-bold" placeholder="••••" maxlength="4" pattern="\d{4}" inputmode="numeric" required style="letter-spacing: 0.25rem;">
+                    <button type="submit" class="btn btn-sm btn-outline-primary px-3 rounded-3 text-nowrap">
+                        {% if has_pin %}Update PIN{% else %}Set PIN in 1 Step{% endif %}
+                    </button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const paymentUrl = {{ payment_url|tojson }};
+    const copyUpiBtn = document.getElementById('copyUpiBtn');
+    const upiIdText = document.getElementById('upiIdText');
+    const copyAlert = document.getElementById('copyAlert');
+    const copyIcon = document.getElementById('copyUpiIcon');
+
+    if (copyUpiBtn && upiIdText) {
+        copyUpiBtn.addEventListener('click', () => {
+            navigator.clipboard.writeText(upiIdText.innerText.trim()).then(() => {
+                copyAlert.classList.remove('d-none');
+                if (copyIcon) copyIcon.classList.replace('bi-clipboard', 'bi-check2');
+                setTimeout(() => {
+                    copyAlert.classList.add('d-none');
+                    if (copyIcon) copyIcon.classList.replace('bi-check2', 'bi-clipboard');
+                }, 2000);
+            });
+        });
+    }
+
+    const copyLinkBtn = document.getElementById('copyLinkBtn');
+    const linkCopyAlert = document.getElementById('linkCopyAlert');
+
+    if (copyLinkBtn) {
+        copyLinkBtn.addEventListener('click', () => {
+            navigator.clipboard.writeText(paymentUrl).then(() => {
+                linkCopyAlert.classList.remove('d-none');
+                setTimeout(() => {
+                    linkCopyAlert.classList.add('d-none');
+                }, 2000);
+            });
+        });
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
+
+<div class="auth-page-wrapper">
+    <div class="container auth-container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-6 col-lg-5">
+                <div class="auth-card">
+                    <div class="auth-card-body">
+                        <div class="text-center mb-3">
+                            <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-2" style="width: 52px; height: 52px; background-color: rgba(11, 112, 126, 0.1);">
+                                <img src="{{ url_for('static', filename='svg/lock.svg') }}" width="26" height="26" alt="Security">
+                            </div>
+                            <h3 class="auth-form-title mb-1">Verify Your Email</h3>
+                            <p class="text-muted small mb-0">We sent a 6-digit verification code to</p>
+                            <strong class="small text-dark text-break">{{ email }}</strong>
+                        </div>
+
+                        <form method="POST" novalidate id="otpForm">
+                            {{ form.hidden_tag() }}
+                            <div class="mb-3">
+                                <label class="form-label small fw-semibold text-dark mb-1" for="otp">{{ form.otp.label.text }}</label>
+                                <div class="auth-input-group {% if form.otp.errors %}is-invalid{% endif %}">
+                                    <span class="auth-input-icon">
+                                        <img src="{{ url_for('static', filename='svg/envelope.svg') }}" width="20" height="20" alt="Code">
+                                    </span>
+                                    {{ form.otp(class="auth-input-field text-center fw-bold fs-4", id="otp", placeholder="••••••", maxlength="6", autocomplete="one-time-code", autofocus=true, style="letter-spacing: 0.35rem;") }}
+                                </div>
+                                {% for error in form.otp.errors %}
+                                    <div class="text-danger small mt-1">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="d-grid mb-3">
+                                <button type="submit" class="btn btn-auth-teal">Verify & Create Account</button>
+                            </div>
+                        </form>
+
+                        <div class="text-center small mb-3">
+                            <span class="text-muted">Didn't receive the code?</span>
+                            <a href="{{ url_for('resend_otp') }}" class="auth-link ms-1">Resend Code</a>
+                        </div>
+                        <hr class="my-3">
+                        <div class="text-center small">
+                            <a href="{{ url_for('register') }}" class="text-muted text-decoration-none">
+                                <i class="bi bi-arrow-left me-1"></i>Back to registration
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

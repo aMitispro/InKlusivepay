@@ -1,0 +1,473 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Cognitive Mode - InKlusivepay
+{% endblock %}
+
+{% block content %}
+<style>
+.cognitive-container {
+    max-width: 880px;
+    margin: 1rem auto 3.5rem auto;
+    font-size: 1.15rem;
+}
+
+/* Safe Mode Top Banner (Image 1 Top) */
+.safe-mode-banner {
+    background-color: #dcfce7;
+    border: 1.5px solid #86efac;
+    border-radius: 16px;
+    padding: 0.85rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+}
+.safe-mode-badge {
+    color: #166534;
+    font-weight: 700;
+    font-size: 1.15rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.btn-need-help {
+    background-color: #facc15;
+    border: 1px solid #eab308;
+    color: #000000;
+    font-weight: 700;
+    font-size: 0.95rem;
+    padding: 0.45rem 1rem;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+.btn-need-help:hover {
+    background-color: #eab308;
+    color: #000000;
+}
+
+/* Header with Exit button */
+.cognitive-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+}
+.btn-exit-cognitive {
+    color: #0F2B48;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0.4rem 0.8rem;
+    border-radius: 8px;
+    border: 1px solid #cbd5e1;
+    background-color: #ffffff;
+    transition: all 0.15s ease;
+}
+.btn-exit-cognitive:hover {
+    background-color: #f1f5f9;
+    color: #0F2B48;
+}
+
+/* Big High-Clarity Cards */
+.cog-card {
+    background-color: #ffffff;
+    border: 2px solid #e2e8f0;
+    border-radius: 20px;
+    padding: 1.5rem;
+    height: 100%;
+    min-height: 240px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 4px 16px rgba(15, 43, 72, 0.03);
+}
+
+.cog-balance-val {
+    font-size: 3.4rem;
+    font-weight: 800;
+    color: #0F2B48;
+    letter-spacing: -1px;
+    line-height: 1.1;
+    margin: 0.5rem 0 1rem 0;
+}
+
+/* Scrollable Contacts Container (scrolls only inside the card) */
+.cog-contacts-scroll {
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    padding: 0.5rem 0.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    scrollbar-width: thin;
+    scrollbar-color: #0F8280 #f1f5f9;
+}
+.cog-contacts-scroll::-webkit-scrollbar {
+    height: 6px;
+}
+.cog-contacts-scroll::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 4px;
+}
+.cog-contacts-scroll::-webkit-scrollbar-thumb {
+    background-color: #0F8280;
+    border-radius: 4px;
+}
+
+/* Contact Avatars */
+.cog-contact-btn {
+    text-decoration: none;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: transform 0.15s ease;
+    flex-shrink: 0;
+    position: relative;
+    max-width: 100px;
+}
+.cog-contact-btn:hover {
+    transform: scale(1.05);
+}
+.cog-avatar-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #0F8280;
+    margin-bottom: 0.4rem;
+    box-shadow: 0 4px 10px rgba(15, 130, 128, 0.15);
+}
+.cog-contact-name {
+    font-weight: 700;
+    color: #0F2B48;
+    font-size: 0.92rem;
+    white-space: normal;
+    word-break: break-word;
+    display: block;
+    line-height: 1.2;
+}
+
+.cog-remove-btn {
+    position: absolute;
+    top: -4px;
+    right: 4px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background-color: #ef4444;
+    color: #ffffff;
+    border: 2px solid #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    cursor: pointer;
+    padding: 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* Big Action Buttons (Image 1 Bottom) */
+.cog-big-btn-teal {
+    background-color: #0F8280;
+    color: #ffffff;
+    border: none;
+    border-radius: 18px;
+    padding: 1.4rem 1.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    font-size: 1.65rem;
+    font-weight: 700;
+    text-decoration: none;
+    box-shadow: 0 6px 20px rgba(15, 130, 128, 0.25);
+    transition: transform 0.15s ease, background-color 0.15s ease;
+}
+.cog-big-btn-teal:hover {
+    background-color: #0c6967;
+    color: #ffffff;
+    transform: translateY(-2px);
+}
+
+.cog-big-btn-navy {
+    background-color: #0F2B48;
+    color: #ffffff;
+    border: none;
+    border-radius: 18px;
+    padding: 1.4rem 1.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    font-size: 1.65rem;
+    font-weight: 700;
+    text-decoration: none;
+    box-shadow: 0 6px 20px rgba(15, 43, 72, 0.25);
+    transition: transform 0.15s ease, background-color 0.15s ease;
+}
+.cog-big-btn-navy:hover {
+    background-color: #0a1e33;
+    color: #ffffff;
+    transform: translateY(-2px);
+}
+</style>
+
+<div class="container cognitive-container">
+
+    <!-- Safe Mode Active Top Bar (Image 1) -->
+    <div class="safe-mode-banner">
+        <div class="safe-mode-badge">
+            <i class="bi bi-shield-lock-fill fs-4 text-success"></i>
+            <span>Safe Mode Active</span>
+        </div>
+        <button type="button" class="btn btn-need-help" id="needHelpBtn">
+            <i class="bi bi-life-preserver"></i>
+            <span>I Need Help</span>
+        </button>
+    </div>
+
+    <!-- Header with Exit Link -->
+    <div class="cognitive-header">
+        <h2 class="fw-bold text-dark mb-0">Cognitive Mode</h2>
+        <a href="{{ url_for('home') }}" class="btn-exit-cognitive">
+            <i class="bi bi-box-arrow-right"></i>
+            <span>Exit Cognitive Mode</span>
+        </a>
+    </div>
+
+    <!-- 2 Main Cards (Image 1) -->
+    <div class="row g-4 mb-4">
+        
+        <!-- Left: Your Available Money -->
+        <div class="col-md-6">
+            <div class="cog-card">
+                <div>
+                    <span class="text-muted fw-bold d-block" style="font-size: 1.25rem;">Your Available Money</span>
+                    <div class="cog-balance-val">₹{{ "{:,.0f}".format(balance if balance is not none else 0.0) }}</div>
+                </div>
+                <div>
+                    {% if is_family_active %}
+                    <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-2 rounded-pill fs-6 fw-bold">
+                        <i class="bi bi-shield-fill-check me-1"></i>Family Circle Active
+                    </span>
+                    {% else %}
+                    <a href="{{ url_for('family_circle') }}" class="btn btn-sm btn-outline-secondary rounded-pill px-3">
+                        <i class="bi bi-people me-1"></i>Enable Family Circle
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Right: Recent / Favourite Contacts -->
+        <div class="col-md-6">
+            <div class="cog-card">
+                <!-- Card Header with "+ Add Contact" Button at Top -->
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="text-muted fw-bold" style="font-size: 1.25rem;">Favorite Contacts</span>
+                    <button type="button" class="btn btn-sm btn-auth-teal rounded-pill px-3 fw-bold d-inline-flex align-items-center gap-1" data-bs-toggle="modal" data-bs-target="#addFavoriteModal">
+                        <i class="bi bi-person-plus-fill"></i>
+                        <span>+ Add Contact</span>
+                    </button>
+                </div>
+
+                <!-- Contacts Content: Scrollable list or Empty state -->
+                {% if favorite_contacts and favorite_contacts|length > 0 %}
+                    <!-- Scrollable horizontal contact strip (scrolls only inside this card) -->
+                    <div class="cog-contacts-scroll">
+                        {% for c in favorite_contacts %}
+                        <div class="position-relative d-inline-block">
+                            <a href="{{ url_for('pay', to=c.username) }}" class="cog-contact-btn" title="Tap to send money to {{ c.nickname }}">
+                                <img src="{{ url_for('static', filename='img/alex_avatar.png') }}" class="cog-avatar-img" alt="{{ c.nickname }}">
+                                <span class="cog-contact-name">{{ c.nickname }}</span>
+                            </a>
+                            <!-- Remove button -->
+                            <form method="POST" action="{{ url_for('remove_favorite_contact', contact_id=c.id) }}" class="d-inline" onsubmit="return confirm('Remove {{ c.nickname }} from favorites?');">
+                                <button type="submit" class="cog-remove-btn" title="Remove {{ c.nickname }}">×</button>
+                            </form>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <!-- Empty State when no favourite contacts exist -->
+                    <div class="text-center py-3 my-auto">
+                        <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-2" style="width: 50px; height: 50px; background-color: #F1F5F9; color: #64748b;">
+                            <i class="bi bi-person-heart fs-4"></i>
+                        </div>
+                        <p class="text-muted small mb-3">No favorite contacts added yet.<br>Add friends or family with their email to send money in 1 click!</p>
+                        <button type="button" class="btn btn-sm btn-auth-teal rounded-3 px-3 py-2 fw-bold" data-bs-toggle="modal" data-bs-target="#addFavoriteModal">
+                            <i class="bi bi-plus-circle me-1"></i>Add Contact using Email
+                        </button>
+                    </div>
+                {% endif %}
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- 2 Huge Action Buttons (Image 1 Bottom) -->
+    <div class="row g-3">
+        <!-- Send Money -->
+        <div class="col-md-6">
+            <a href="{{ url_for('pay') }}" class="cog-big-btn-teal">
+                <i class="bi bi-wallet2 fs-2"></i>
+                <span>Send Money</span>
+            </a>
+        </div>
+
+        <!-- See Past Payments -->
+        <div class="col-md-6">
+            <a href="{{ url_for('transactions') }}" class="cog-big-btn-navy">
+                <i class="bi bi-file-earmark-text-fill fs-2"></i>
+                <span>See Past Payments</span>
+            </a>
+        </div>
+    </div>
+
+</div>
+
+<!-- Modal: Add Favorite Contact using Email/Username -->
+<div class="modal fade" id="addFavoriteModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4 border-0 shadow">
+            <div class="modal-header border-0 pb-0">
+                <div class="d-flex align-items-center gap-2">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center text-white" style="width: 40px; height: 40px; background-color: #0F8280;">
+                        <i class="bi bi-person-plus-fill fs-5"></i>
+                    </div>
+                    <h5 class="modal-title fw-bold text-dark">Add Favorite Contact</h5>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="POST" action="{{ url_for('add_favorite_contact') }}">
+                <div class="modal-body py-3">
+                    <p class="text-muted small mb-3">Enter the registered email or username of another InKlusivepay user to save them for easy 1-touch payments.</p>
+
+                    <!-- Contact Email / Username -->
+                    <div class="mb-3">
+                        <label class="form-label small fw-semibold text-dark">User Email or Username</label>
+                        <div class="auth-input-group">
+                            <span class="auth-input-icon">
+                                <img src="{{ url_for('static', filename='svg/envelope.svg') }}" width="20" height="20" alt="Email">
+                            </span>
+                            <input type="text" name="identifier" id="favIdentifierInput" class="auth-input-field" placeholder="e.g. friend@example.com or username" required autocomplete="off">
+                        </div>
+                        <div id="favIdentifierFeedback" class="small mt-1"></div>
+                    </div>
+
+                    <!-- Nickname / Relation (Optional) -->
+                    <div class="mb-3">
+                        <label class="form-label small fw-semibold text-dark">Nickname or Relation (Optional)</label>
+                        <div class="auth-input-group">
+                            <span class="auth-input-icon">
+                                <img src="{{ url_for('static', filename='svg/userlogo.svg') }}" width="20" height="20" alt="User">
+                            </span>
+                            <input type="text" name="nickname" class="auth-input-field" placeholder="e.g. Rahul (Son), Mom, Doctor">
+                        </div>
+                        <small class="text-muted">This friendly name will appear under their photo.</small>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 pt-0 d-flex gap-2">
+                    <button type="button" class="btn btn-light rounded-3 px-3" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-auth-teal rounded-3 px-4 fw-bold">Save Contact</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Help Modal -->
+<div class="modal fade" id="cognitiveHelpModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4 border-0 shadow">
+            <div class="modal-header border-0 pb-0">
+                <h4 class="modal-title fw-bold text-dark">
+                    <i class="bi bi-info-circle-fill text-primary me-2"></i>Need Help?
+                </h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body py-3">
+                <p class="fs-5 text-dark mb-3">You are in <strong>Cognitive Safe Mode</strong> designed for simple, stress-free banking.</p>
+                <div class="list-group gap-2 mb-3">
+                    <div class="list-group-item rounded-3 border bg-light p-3">
+                        <strong class="d-block text-teal">1. Tap "Send Money"</strong>
+                        <small class="text-muted">To send money directly to your family or any username.</small>
+                    </div>
+                    <div class="list-group-item rounded-3 border bg-light p-3">
+                        <strong class="d-block text-primary">2. Tap a Contact's Face</strong>
+                        <small class="text-muted">To send money directly to your saved favorite contacts with 1 touch.</small>
+                    </div>
+                    <div class="list-group-item rounded-3 border bg-light p-3">
+                        <strong class="d-block text-dark">3. Tap "See Past Payments"</strong>
+                        <small class="text-muted">To see your list of past transfers with large clear text.</small>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer border-0 pt-0">
+                <button type="button" class="btn btn-auth-teal w-100 py-2 fs-5" data-bs-dismiss="modal">I Understand</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Help Modal Voice Guidance
+    const helpBtn = document.getElementById('needHelpBtn');
+    if (helpBtn) {
+        helpBtn.addEventListener('click', () => {
+            const modal = new bootstrap.Modal(document.getElementById('cognitiveHelpModal'));
+            modal.show();
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const text = "Need help? Tap Send Money to transfer funds, tap a favorite contact's photo to send money instantly, or tap See Past Payments to view your history.";
+                const utterance = new SpeechSynthesisUtterance(text);
+                window.speechSynthesis.speak(utterance);
+            }
+        });
+    }
+
+    // 2. Live Lookup for Add Favorite Contact
+    const favInput = document.getElementById('favIdentifierInput');
+    const favFeedback = document.getElementById('favIdentifierFeedback');
+    let debounceTimer = null;
+
+    if (favInput && favFeedback) {
+        favInput.addEventListener('input', () => {
+            clearTimeout(debounceTimer);
+            const val = favInput.value.trim();
+            if (!val || val.length < 2) {
+                favFeedback.innerHTML = '';
+                return;
+            }
+
+            debounceTimer = setTimeout(() => {
+                fetch(`/api/check-user/${encodeURIComponent(val)}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.exists) {
+                            if (data.is_self) {
+                                favFeedback.innerHTML = `<span class="text-warning"><i class="bi bi-exclamation-triangle"></i> You cannot add yourself as a favorite.</span>`;
+                            } else {
+                                favFeedback.innerHTML = `<span class="text-success fw-semibold"><i class="bi bi-check-circle"></i> Found user: ${data.username}</span>`;
+                            }
+                        } else {
+                            favFeedback.innerHTML = `<span class="text-muted"><i class="bi bi-info-circle"></i> No user found with this email/username.</span>`;
+                        }
+                    })
+                    .catch(() => {});
+            }, 300);
+        });
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% block title %}
+    My Wallet & Balance - InKlusivepay
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <a href="{{ url_for('home') }}" class="btn btn-sm btn-outline-secondary rounded-pill px-3">
+                    <i class="bi bi-arrow-left me-1"></i>Home
+                </a>
+                <a href="{{ url_for('profile') }}" class="btn btn-sm btn-outline-secondary rounded-pill px-3">
+                    <i class="bi bi-qr-code me-1"></i>My QR
+                </a>
+            </div>
+
+            <!-- Balance Card -->
+            <div class="card border rounded-4 p-4 mb-3 bg-white shadow-sm">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                    <div>
+                        <span class="text-muted small text-uppercase fw-semibold">InKlusivepay Digital Wallet</span>
+                        <h1 class="display-5 fw-bold mt-1 mb-0 text-dark" style="color: #0F2B48 !important;">₹{{ "%.2f"|format(balance) }}</h1>
+                    </div>
+                    <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-2 rounded-pill">
+                        <i class="bi bi-check-circle-fill me-1"></i>Active
+                    </span>
+                </div>
+
+                <div class="d-flex flex-wrap align-items-center justify-content-between pt-2 border-top small text-muted">
+                    <div>
+                        <span>UPI ID: </span>
+                        <strong class="text-dark">{{ current_user.username }}@inklusive</strong>
+                    </div>
+                    <div>
+                        <span>Account ID: </span>
+                        <strong class="text-dark">#{{ "%04d"|format(current_user.id) }}</strong>
+                    </div>
+                </div>
+
+                <div class="d-flex gap-2 mt-3">
+                    <a href="{{ url_for('pay') }}" class="btn btn-auth-teal btn-sm flex-fill py-2 rounded-3">
+                        <i class="bi bi-send me-1"></i>Send Money
+                    </a>
+                    <a href="{{ url_for('deposit') }}" class="btn btn-outline-primary btn-sm flex-fill py-2 rounded-3">
+                        <i class="bi bi-plus-circle me-1"></i>Add Money
+                    </a>
+                </div>
+            </div>
+
+            <!-- Overview Metrics -->
+            <div class="row g-2 mb-3">
+                <div class="col-4">
+                    <div class="card border rounded-4 p-3 text-center bg-white shadow-sm">
+                        <div class="text-muted small">Total Spent</div>
+                        <h6 class="fw-bold text-danger mb-0 mt-1">₹{{ "%.2f"|format(total_sent) }}</h6>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="card border rounded-4 p-3 text-center bg-white shadow-sm">
+                        <div class="text-muted small">Received</div>
+                        <h6 class="fw-bold text-success mb-0 mt-1">₹{{ "%.2f"|format(total_received) }}</h6>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="card border rounded-4 p-3 text-center bg-white shadow-sm">
+                        <div class="text-muted small">Deposits</div>
+                        <h6 class="fw-bold text-teal mb-0 mt-1" style="color: #0F8280;">₹{{ "%.2f"|format(total_deposited) }}</h6>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Transactions Section -->
+            <div class="card border rounded-4 p-3 mb-4 bg-white shadow-sm">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h6 class="fw-bold mb-0 text-dark">Recent Activity</h6>
+                    <a href="{{ url_for('transactions') }}" class="text-decoration-none small fw-semibold text-teal">
+                        View All <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+
+                {% if recent_transactions %}
+                <div class="list-group list-group-flush">
+                    {% for t in recent_transactions %}
+                    <div class="list-group-item px-0 py-2 d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="mb-0 small fw-semibold text-dark">{{ t.counterparty }}</h6>
+                            <small class="text-muted" style="font-size: 0.75rem;">
+                                {{ t.created_on.strftime('%b %d, %Y • %I:%M %p') }}
+                                {% if t.note %}• <em>{{ t.note }}</em>{% endif %}
+                            </small>
+                        </div>
+                        <div class="text-end">
+                            <span class="fw-bold small {% if t.direction == 'SENT' %}text-danger{% else %}text-success{% endif %}">
+                                {% if t.direction == 'SENT' %}-{% else %}+{% endif %}₹{{ "%.2f"|format(t.amount) }}
+                            </span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="text-center py-3 text-muted small">
+                    <p class="mb-1">No transactions recorded yet.</p>
+                    <a href="{{ url_for('pay') }}" class="btn btn-sm btn-outline-primary rounded-pill">Send your first payment</a>
+                </div>
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,56 +1,545 @@
 {% extends "base.html" %}
+
 {% block title %}
-    {{ title }}
+    Home - InKlusivepay
 {% endblock %}
 
 {% block content %}
-<div class="container py-4">
-    <!-- Top Right: User Profile Information -->
-    <div class="d-flex justify-content-end align-items-center mb-5">
-        <div class="d-flex align-items-center gap-3">
-            <!-- User Info -->
-            <div class="text-end">
-                <h6 class="mb-0 fw-bold">amitispro</h6>
-                <small class="text-muted">amit.baliarsingh04@gmail.com</small>
+<style>
+.home-phone-wrapper {
+    max-width: 430px;
+    margin: 0 auto;
+    padding: 0.5rem 1rem 4.5rem 1rem;
+    background-color: #FAF9F6;
+    min-height: 100vh;
+}
+
+/* Digital Balance Card (Mockup Exact Match) */
+.home-digital-card {
+    background: radial-gradient(circle at 85% 30%, #164e63 0%, #102B48 55%, #0B1C30 100%);
+    color: #ffffff;
+    border-radius: 20px;
+    padding: 1.4rem 1.4rem 1.25rem 1.4rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(15, 43, 72, 0.22);
+    margin-bottom: 1.5rem;
+}
+
+.home-card-decor-outer {
+    position: absolute;
+    top: -25px;
+    right: -25px;
+    width: 155px;
+    height: 155px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(15, 130, 128, 0.35);
+    background: rgba(15, 130, 128, 0.12);
+    pointer-events: none;
+}
+
+.home-card-decor-inner {
+    position: absolute;
+    top: 22px;
+    right: 58px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(15, 130, 128, 0.4);
+    pointer-events: none;
+}
+
+.home-card-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1.5px solid #2dd4bf;
+}
+
+.home-card-bell {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    text-decoration: none;
+    transition: background 0.2s ease;
+}
+.home-card-bell:hover {
+    background: rgba(255, 255, 255, 0.22);
+    color: #ffffff;
+}
+
+.home-card-balance-label {
+    font-size: 11px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: #94a3b8;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 0.3rem;
+}
+
+.home-card-balance-val {
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    line-height: 1.15;
+    margin-bottom: 0.25rem;
+    color: #ffffff;
+}
+
+.home-card-subtext {
+    font-size: 13px;
+    color: #2dd4bf;
+    font-weight: 600;
+}
+
+/* Family Supervision Button (Mockup Exact Match) */
+.home-family-btn {
+    background-color: #0F8280;
+    color: #ffffff !important;
+    border-radius: 14px;
+    padding: 13px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-decoration: none;
+    font-weight: 600;
+    box-shadow: 0 4px 14px rgba(15, 130, 128, 0.2);
+    transition: transform 0.15s ease, background-color 0.15s ease;
+    margin-bottom: 1.75rem;
+}
+.home-family-btn:hover {
+    background-color: #0c6967;
+    transform: translateY(-1px);
+}
+
+/* Quick Modes Cards (Mockup Exact Match) */
+.home-mode-card {
+    background-color: #ffffff;
+    border: 1px solid #EAE6DF !important;
+    border-radius: 16px;
+    padding: 13px 16px;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 14px;
+    box-shadow: 0 2px 6px rgba(15, 43, 72, 0.02);
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.15s ease;
+    cursor: pointer;
+}
+.home-mode-card:hover {
+    box-shadow: 0 4px 12px rgba(15, 43, 72, 0.06);
+    border-color: #cbd5e1 !important;
+    transform: translateY(-1px);
+}
+
+.home-mode-icon-box {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+}
+
+/* Transactions (Mockup Exact Match) */
+.home-txn-card {
+    background-color: #ffffff;
+    border: 1px solid #EAE6DF !important;
+    border-radius: 16px;
+    padding: 12px 16px;
+    margin-bottom: 0.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 6px rgba(15, 43, 72, 0.02);
+}
+</style>
+
+<div class="home-phone-wrapper pt-3">
+
+    <!-- 1. Digital Balance Card (Mockup Exact Match) -->
+    <div class="home-digital-card">
+        <div class="home-card-decor-outer"></div>
+        <div class="home-card-decor-inner"></div>
+
+        <!-- Top row: Avatar + Name + ID + Bell -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="d-flex align-items-center gap-2">
+                <img src="{{ url_for('static', filename='img/alex_avatar.png') }}" class="home-card-avatar" alt="User">
+                <div>
+                    <div class="d-flex align-items-center gap-1">
+                        <strong class="text-white" style="font-size: 15px;">{{ current_user.username|capitalize }}</strong>
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="#0F8280">
+                            <circle cx="12" cy="12" r="10" fill="#0F8280"/>
+                            <path d="M9 12l2 2 4-4" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <small style="color: #94a3b8; font-size: 11px;">ID •••• {{ "%04d"|format(current_user.id) }}</small>
+                </div>
             </div>
-            <!-- Circular Profile Logo Placeholder -->
-            <div class="rounded-circle bg-secondary text-white d-flex justify-content-center align-items-center" 
-                 style="width: 45px; height: 45px; font-weight: bold;">
-                <!-- TODO: Paste your profile image or SVG icon here -->
+            <a href="{{ url_for('family_circle') }}" class="home-card-bell" title="Notifications & Circle">
+                <i class="bi bi-bell fs-6"></i>
+            </a>
+        </div>
+
+        <!-- Total Balance -->
+        <div class="home-card-balance-label">
+            <span>TOTAL BALANCE</span>
+            <button type="button" class="btn btn-link text-white p-0 text-decoration-none" id="toggleBalanceEye" title="Toggle visibility">
+                <i class="bi bi-eye" id="eyeIcon" style="font-size: 14px; color: #cbd5e1;"></i>
+            </button>
+        </div>
+        <div class="home-card-balance-val" id="balanceAmountDisplay">₹{{ "{:,.2f}".format(balance if balance is not none else 12450.00) }}</div>
+        <div class="home-card-subtext">+₹320.40 this month</div>
+    </div>
+
+    <!-- 2. Add Family Supervision Section (Mockup Exact Match) -->
+    <div class="mb-4">
+        <h6 class="fw-bold mb-2" style="font-size: 17.5px; color: #1e293b;">Add Family Supervision</h6>
+        <a href="{{ url_for('family_circle') }}" class="home-family-btn">
+            <div class="d-flex align-items-center gap-3">
+                <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; background: rgba(255,255,255,0.2);">
+                    <i class="bi bi-people fs-5"></i>
+                </div>
+                <span style="font-size: 15px; font-weight: 700;">Family circle</span>
+            </div>
+            <i class="bi bi-arrow-right fs-5"></i>
+        </a>
+    </div>
+
+    <!-- 3. Quick Modes Section (Mockup Exact Match) -->
+    <div class="mb-4">
+        <div class="d-flex align-items-center gap-2 mb-2 pb-1">
+            <h6 class="fw-bold mb-0" style="font-size: 17.5px; color: #1e293b;">Quick Modes</h6>
+            <span class="badge rounded-pill px-2 py-1" style="background-color: #D4F4EE; color: #0F8280; font-size: 10px; font-weight: 800; letter-spacing: 0.5px;">ACCESSIBILITY</span>
+        </div>
+
+        <!-- Colorblind Mode -->
+        <div class="home-mode-card" id="cardColorblind" title="Click to toggle High Contrast Colorblind Mode">
+            <div class="home-mode-icon-box" style="background-color: #D4F4EE; color: #0F8280;">
+                <i class="bi bi-eye fs-4"></i>
+            </div>
+            <div>
+                <strong class="d-block text-dark" style="font-size: 15px;">Colorblind Mode</strong>
+                <small class="text-muted" style="font-size: 12px;">Toggle high-contrast theme across the website</small>
+            </div>
+        </div>
+
+        <!-- Cognitive Mode (Navigates to Image 1 Screen) -->
+        <a href="{{ url_for('cognitive_mode') }}" class="home-mode-card" id="cardCognitive">
+            <div class="home-mode-icon-box" style="background-color: #F5EBE1; color: #1e293b;">
+                <i class="bi bi-brain fs-4"></i>
+            </div>
+            <div>
+                <strong class="d-block text-dark" style="font-size: 15px;">Cognitive Mode</strong>
+                <small class="text-muted" style="font-size: 12px;">Simplified layout with focus assistance</small>
+            </div>
+        </a>
+
+        <!-- Text to Speech -->
+        <div class="home-mode-card" id="cardTts" title="Click to toggle Text to Speech Voice Guidance">
+            <div class="home-mode-icon-box" style="background-color: #EBEFF5; color: #334155;">
+                <i class="bi bi-soundwave fs-4"></i>
+            </div>
+            <div>
+                <strong class="d-block text-dark" style="font-size: 15px;">Text to Speech</strong>
+                <small class="text-muted" style="font-size: 12px;">Auditory voice feedback for every action</small>
             </div>
         </div>
     </div>
 
-    <!-- Main Content / Dashboard Actions -->
-    <div class="row justify-content-center">
-        <div class="col-md-6 col-lg-5">
-            <div class="card shadow-sm border-0 rounded-4 p-4 bg-light">
-                <h4 class="text-center mb-4 text-dark fw-semibold">Quick Actions</h4>
-                
-                <div class="d-grid gap-3">
-                    <!-- QR Button -->
-                    <a href="#" class="btn btn-dark btn-lg py-3 rounded-pill shadow-sm d-flex align-items-center justify-content-center gap-2">
-                        <!-- TODO: Paste your QR SVG icon here -->
-                        Scan QR & Pay
-                    </a>
+    <!-- 4. Latest Transactions Section (Mockup Exact Match) -->
+    <div class="mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-2 pb-1">
+            <h6 class="fw-bold mb-0" style="font-size: 17.5px; color: #1e293b;">Latest Transactions</h6>
+            <a href="{{ url_for('transactions') }}" class="btn btn-sm rounded-pill px-3 fw-bold text-decoration-none" style="background-color: #D4F4EE; color: #0F8280; font-size: 12px;">
+                More Options
+            </a>
+        </div>
 
-                    <!-- Check Balance Button -->
-                    <a href="#" class="btn btn-outline-primary btn-lg py-3 rounded-pill">
-                        Check Balance
-                    </a>
-
-                    <!-- See Transaction History Button -->
-                    <a href="#" class="btn btn-outline-secondary btn-lg py-3 rounded-pill">
-                        See Transaction History
-                    </a>
-
-                    <!-- Profile Button -->
-                    <a href="#" class="btn btn-outline-dark btn-lg py-3 rounded-pill">
-                        Profile
-                    </a>
+        {% if recent_transactions and recent_transactions|length > 0 %}
+            {% for t in recent_transactions[:4] %}
+            <div class="home-txn-card">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width: 42px; height: 42px; background-color: #F5EBE1; color: #475569; font-size: 15px;">
+                        {{ t.counterparty[0]|upper }}
+                    </div>
+                    <div>
+                        <strong class="d-block text-dark" style="font-size: 14.5px;">{{ t.counterparty }}</strong>
+                        <small class="text-muted" style="font-size: 12px;">{{ t.created_on.strftime('%b %d • %I:%M %p') }}</small>
+                    </div>
                 </div>
+                <div class="text-end">
+                    <span class="fw-bold" style="font-size: 15.5px; color: {% if t.direction == 'SENT' %}#991B1B{% else %}#0F8280{% endif %};">
+                        {% if t.direction == 'SENT' %}-{% else %}+{% endif %}₹{{ "%.2f"|format(t.amount) }}
+                    </span>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <!-- Mock Visual Transactions matching Image 2 perfectly -->
+            <div class="home-txn-card">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width: 42px; height: 42px; background-color: #F5EBE1; color: #475569; font-size: 15px;">S</div>
+                    <div>
+                        <strong class="d-block text-dark" style="font-size: 14.5px;">Supermarket Central</strong>
+                        <small class="text-muted" style="font-size: 12px;">Oct 24 • 10:30 AM</small>
+                    </div>
+                </div>
+                <div class="text-end">
+                    <span class="fw-bold" style="font-size: 15.5px; color: #991B1B;">-₹45.20</span>
+                </div>
+            </div>
+            <div class="home-txn-card">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width: 42px; height: 42px; background-color: #F5EBE1; color: #475569; font-size: 15px;">M</div>
+                    <div>
+                        <strong class="d-block text-dark" style="font-size: 14.5px;">Metro Pass Reload</strong>
+                        <small class="text-muted" style="font-size: 12px;">Oct 23 • 08:15 PM</small>
+                    </div>
+                </div>
+                <div class="text-end">
+                    <span class="fw-bold" style="font-size: 15.5px; color: #991B1B;">-₹20.00</span>
+                </div>
+            </div>
+            <div class="home-txn-card">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width: 42px; height: 42px; background-color: #F5EBE1; color: #475569; font-size: 15px;">J</div>
+                    <div>
+                        <strong class="d-block text-dark" style="font-size: 14.5px;">James Wilson</strong>
+                        <small class="text-muted" style="font-size: 12px;">Oct 22 • 02:45 PM</small>
+                    </div>
+                </div>
+                <div class="text-end">
+                    <span class="fw-bold" style="font-size: 15.5px; color: #0F8280;">+₹120.00</span>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+</div>
+
+<!-- Voice Assistant Login Welcome Modal (TTS Prompt) -->
+<div class="modal fade" id="voiceWelcomeModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4 border-0 shadow">
+            <div class="modal-header border-0 pb-0">
+                <div class="d-flex align-items-center gap-2">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center text-white" style="width: 40px; height: 40px; background-color: #0F8280;">
+                        <i class="bi bi-mic-fill fs-5"></i>
+                    </div>
+                    <h5 class="modal-title fw-bold text-dark">Voice Assistant</h5>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body py-3">
+                <p class="text-dark fs-6 mb-2">Welcome back, <strong>{{ current_user.username }}</strong>!</p>
+                <p class="text-muted small">Would you like to turn on the <strong>Voice Assistant</strong> to speak and guide you through every action step-by-step?</p>
+            </div>
+            <div class="modal-footer border-0 pt-0 d-flex gap-2">
+                <button type="button" class="btn btn-light rounded-3 px-3" data-bs-dismiss="modal">No, Thanks</button>
+                <button type="button" class="btn btn-auth-teal rounded-3 px-4" id="enableVoiceWelcomeBtn">
+                    <i class="bi bi-volume-up-fill me-1"></i>Yes, Enable Assistant
+                </button>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Balance Eye Visibility Toggle
+    const toggleEye = document.getElementById('toggleBalanceEye');
+    const balanceDisplay = document.getElementById('balanceAmountDisplay');
+    const eyeIcon = document.getElementById('eyeIcon');
+    const actualBalance = balanceDisplay.textContent;
+    let isHidden = false;
+
+    if (toggleEye && balanceDisplay) {
+        toggleEye.addEventListener('click', (e) => {
+            e.stopPropagation();
+            isHidden = !isHidden;
+            if (isHidden) {
+                balanceDisplay.textContent = '••••••••';
+                eyeIcon.className = 'bi bi-eye-slash';
+            } else {
+                balanceDisplay.textContent = actualBalance;
+                eyeIcon.className = 'bi bi-eye';
+            }
+        });
+    }
+
+<!-- Color Vision Deficiency (CVD) Selector Modal -->
+<div class="modal fade" id="cvdSelectorModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4 border-0 shadow">
+            <div class="modal-header border-0 pb-0">
+                <div class="d-flex align-items-center gap-2">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center text-white" style="width: 40px; height: 40px; background-color: var(--cvd-primary, #0F8280);">
+                        <i class="bi bi-eye-fill fs-5"></i>
+                    </div>
+                    <div>
+                        <h5 class="modal-title fw-bold text-dark mb-0">Color Vision Deficiency Modes</h5>
+                        <small class="text-muted" style="font-size: 11px;">WCAG 2.1 AAA Compliant High-Contrast Palettes</small>
+                    </div>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body py-3">
+                <p class="text-muted small mb-3">Choose the color profile tailored to your vision. All modes include high-contrast borders and non-color icon cues.</p>
+
+                <div class="list-group gap-2 mb-2">
+                    <!-- Default Theme -->
+                    <button type="button" class="list-group-item list-group-item-action rounded-3 border p-3 cvd-modal-option" data-cvd="default">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <strong class="text-dark">Standard Theme (Default)</strong>
+                            <span class="badge rounded-pill bg-secondary cvd-opt-badge" data-badge-for="default">Off</span>
+                        </div>
+                        <small class="text-muted d-block">Original Teal & Warm Cream UI palette.</small>
+                    </button>
+
+                    <!-- Deuteranopia -->
+                    <button type="button" class="list-group-item list-group-item-action rounded-3 border p-3 cvd-modal-option" data-cvd="deuteranopia">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <strong style="color: #005AB5;">Deuteranopia (Green-Blind / Weak)</strong>
+                            <span class="badge rounded-pill bg-secondary cvd-opt-badge" data-badge-for="deuteranopia">Off</span>
+                        </div>
+                        <small class="text-muted d-block">Wong Palette: Cobalt Blue for Income/Success & Vermilion Orange for Expense/Alert (8.5:1 contrast).</small>
+                    </button>
+
+                    <!-- Protanopia -->
+                    <button type="button" class="list-group-item list-group-item-action rounded-3 border p-3 cvd-modal-option" data-cvd="protanopia">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <strong style="color: #004488;">Protanopia (Red-Blind / Weak)</strong>
+                            <span class="badge rounded-pill bg-secondary cvd-opt-badge" data-badge-for="protanopia">Off</span>
+                        </div>
+                        <small class="text-muted d-block">Tol Palette: Deep Navy Blue for Credit & Amber Gold for Debit (9:1 contrast).</small>
+                    </button>
+
+                    <!-- Tritanopia -->
+                    <button type="button" class="list-group-item list-group-item-action rounded-3 border p-3 cvd-modal-option" data-cvd="tritanopia">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <strong style="color: #009988;">Tritanopia (Blue-Blind / Weak)</strong>
+                            <span class="badge rounded-pill bg-secondary cvd-opt-badge" data-badge-for="tritanopia">Off</span>
+                        </div>
+                        <small class="text-muted d-block">Tol Palette: Mint Teal for Credit & Vivid Crimson for Debit (7.5:1 contrast).</small>
+                    </button>
+                </div>
+            </div>
+            <div class="modal-footer border-0 pt-0">
+                <button type="button" class="btn btn-auth-teal w-100 py-2 fw-bold" data-bs-dismiss="modal">Apply & Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Balance Eye Visibility Toggle
+    const toggleEye = document.getElementById('toggleBalanceEye');
+    const balanceDisplay = document.getElementById('balanceAmountDisplay');
+    const eyeIcon = document.getElementById('eyeIcon');
+    const actualBalance = balanceDisplay.textContent;
+    let isHidden = false;
+
+    if (toggleEye && balanceDisplay) {
+        toggleEye.addEventListener('click', (e) => {
+            e.stopPropagation();
+            isHidden = !isHidden;
+            if (isHidden) {
+                balanceDisplay.textContent = '••••••••';
+                eyeIcon.className = 'bi bi-eye-slash';
+            } else {
+                balanceDisplay.textContent = actualBalance;
+                eyeIcon.className = 'bi bi-eye';
+            }
+        });
+    }
+
+    // 2. Colorblind Mode Card -> 1-Click High Contrast Toggle on Whole Website
+    const cardColorblind = document.getElementById('cardColorblind');
+    if (cardColorblind) {
+        cardColorblind.addEventListener('click', () => {
+            let active = localStorage.getItem('colorblind_mode') === 'true';
+            active = !active;
+            localStorage.setItem('colorblind_mode', active ? 'true' : 'false');
+            if (active) {
+                document.documentElement.setAttribute('data-colorblind', 'true');
+                document.documentElement.setAttribute('data-cvd-mode', 'deuteranopia');
+                localStorage.setItem('cvd_mode', 'deuteranopia');
+            } else {
+                document.documentElement.removeAttribute('data-colorblind');
+                document.documentElement.removeAttribute('data-cvd-mode');
+                localStorage.setItem('cvd_mode', 'default');
+            }
+
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const msg = active ? "High contrast colorblind mode enabled across the entire website." : "High contrast colorblind mode turned off.";
+                const utter = new SpeechSynthesisUtterance(msg);
+                window.speechSynthesis.speak(utter);
+            }
+        });
+    }
+
+    // 3. Text to Speech Card Click Handler -> 1-Click Voice Guidance
+    const cardTts = document.getElementById('cardTts');
+    if (cardTts) {
+        cardTts.addEventListener('click', () => {
+            let active = localStorage.getItem('tts_mode') === 'true';
+            active = !active;
+            localStorage.setItem('tts_mode', active ? 'true' : 'false');
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const msg = active ? "Text to speech voice guidance enabled. Tap any button, card, or link to hear details." : "Text to speech disabled.";
+                const utter = new SpeechSynthesisUtterance(msg);
+                window.speechSynthesis.speak(utter);
+            }
+        });
+    }
+
+    // 4. Voice Assistant Welcome Prompt
+    if (!sessionStorage.getItem('voice_prompt_shown')) {
+        sessionStorage.setItem('voice_prompt_shown', 'true');
+        setTimeout(() => {
+            const voiceModal = new bootstrap.Modal(document.getElementById('voiceWelcomeModal'));
+            voiceModal.show();
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const welcomeText = "Welcome to InKlusivepay! Would you like to enable the Voice Assistant to guide you step by step?";
+                const utter = new SpeechSynthesisUtterance(welcomeText);
+                window.speechSynthesis.speak(utter);
+            }
+        }, 800);
+    }
+
+    const enableVoiceBtn = document.getElementById('enableVoiceWelcomeBtn');
+    if (enableVoiceBtn) {
+        enableVoiceBtn.addEventListener('click', () => {
+            localStorage.setItem('tts_mode', 'true');
+            bootstrap.Modal.getInstance(document.getElementById('voiceWelcomeModal')).hide();
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utter = new SpeechSynthesisUtterance("Voice Assistant enabled. Your balance is {{ balance }}. You can tap Send Money or Family Circle for protection.");
+                window.speechSynthesis.speak(utter);
+            }
+        });
+    }
+});
+</script>
 {% endblock %}

@@ -1,66 +1,358 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="light">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ title }}</title>
+    <title>{{ title }} - InKlusivepay</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
+    <style>
+        body {
+            background-color: #fbf9f5;
+            color: #1e293b;
+            padding-bottom: 85px;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        /* Colorblind Accessible Palette (when enabled) */
+        html[data-colorblind="true"] .text-danger {
+            color: #d95f02 !important;
+        }
+        html[data-colorblind="true"] .text-success {
+            color: #1f78b4 !important;
+        }
+        html[data-colorblind="true"] .btn-danger,
+        html[data-colorblind="true"] .badge.bg-danger {
+            background-color: #d95f02 !important;
+            border-color: #d95f02 !important;
+        }
+        html[data-colorblind="true"] .btn-success,
+        html[data-colorblind="true"] .badge.bg-success {
+            background-color: #1f78b4 !important;
+            border-color: #1f78b4 !important;
+        }
+        html[data-colorblind="true"] a {
+            text-decoration: underline !important;
+        }
+        html[data-colorblind="true"] .border {
+            border-width: 2px !important;
+        }
+
+        /* Cognitive Mode */
+        html[data-cognitive="true"] {
+            font-size: 1.08rem;
+            line-height: 1.65;
+            letter-spacing: 0.2px;
+        }
+        html[data-cognitive="true"] .card {
+            box-shadow: 0 0 0 2px #0f2b48 !important;
+        }
+
+        /* Bottom Nav Item styling matching Image 2 */
+        .bottom-nav-item {
+            color: #64748b;
+            transition: color 0.15s ease-in-out;
+            font-size: 0.72rem;
+            font-weight: 500;
+        }
+        .bottom-nav-item i {
+            font-size: 1.35rem;
+            display: block;
+            margin-bottom: 2px;
+        }
+        .bottom-nav-item.active,
+        .bottom-nav-item:hover {
+            color: #4f46e5;
+            font-weight: 700;
+        }
+
+        .floating-qr-btn {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4);
+            border: 3px solid #ffffff;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .floating-qr-btn:hover {
+            transform: scale(1.06);
+            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.5);
+            color: #ffffff;
+        }
+
+        .navbar-brand-logo {
+            height: 38px;
+            width: auto;
+            object-fit: contain;
+        }
+    </style>
+    <script>
+        (function() {
+            document.documentElement.setAttribute('data-bs-theme', 'light');
+            const cvdMode = localStorage.getItem('cvd_mode') || 'default';
+            if (cvdMode !== 'default') {
+                document.documentElement.setAttribute('data-cvd-mode', cvdMode);
+                document.documentElement.setAttribute('data-colorblind', 'true');
+            } else if (localStorage.getItem('colorblind_mode') === 'true') {
+                document.documentElement.setAttribute('data-colorblind', 'true');
+            }
+            if (localStorage.getItem('cognitive_mode') === 'true') {
+                document.documentElement.setAttribute('data-cognitive', 'true');
+            }
+        })();
+    </script>
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Navbar</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            Dropdown
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-                    </li>
-                </ul>
-                <form class="d-flex" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
+    {% if request.endpoint not in ['login', 'register', 'verify_otp', 'resend_otp'] %}
+    <!-- Unified Brand Upper Navbar with Logo, Modes, Login/Register & Profile -->
+    <header class="border-bottom py-2 bg-white shadow-sm sticky-top">
+        <div class="container d-flex justify-content-between align-items-center">
+            <!-- Brand Logo -->
+            <a class="text-decoration-none d-flex align-items-center" href="{{ url_for('home') }}">
+                <img src="{{ url_for('static', filename='img/navbar_logo.png') }}" class="navbar-brand-logo" alt="InKlusivepay">
+            </a>
+
+            <!-- Right Controls: Quick Modes & Auth Buttons -->
+            <div class="d-flex align-items-center gap-2">
+                <!-- Accessibility Quick Modes Dropdown -->
+                <div class="dropdown">
+                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle d-flex align-items-center gap-1 rounded-pill px-3" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="Accessibility Quick Modes">
+                        <i class="bi bi-universal-access"></i>
+                        <span class="d-none d-sm-inline">Modes</span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow p-2 rounded-4" style="min-width: 240px;">
+                        <!-- Colorblind / CVD Modes -->
+                        <li>
+                            <div class="px-2 py-1">
+                                <span class="d-flex align-items-center gap-1 small fw-bold text-dark mb-1">
+                                    <i class="bi bi-eye text-warning"></i> Color Vision Mode
+                                </span>
+                                <div class="btn-group w-100 mb-1" role="group">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary cvd-select-btn active" data-cvd="default" style="font-size: 10px;">Default</button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary cvd-select-btn" data-cvd="deuteranopia" style="font-size: 10px;" title="Green-Blind">Deutan</button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary cvd-select-btn" data-cvd="protanopia" style="font-size: 10px;" title="Red-Blind">Protan</button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary cvd-select-btn" data-cvd="tritanopia" style="font-size: 10px;" title="Blue-Blind">Tritan</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li><hr class="dropdown-divider my-1"></li>
+                        <!-- Cognitive Mode -->
+                        <li>
+                            <button class="dropdown-item rounded-3 d-flex justify-content-between align-items-center py-2" id="cognitiveToggleBtn" type="button">
+                                <span><i class="bi bi-lightbulb me-2 text-primary"></i>Cognitive Mode</span>
+                                <span class="badge bg-secondary rounded-pill" id="cognitiveBadge">Off</span>
+                            </button>
+                        </li>
+                        <!-- Text to Speech Mode -->
+                        <li>
+                            <button class="dropdown-item rounded-3 d-flex justify-content-between align-items-center py-2" id="ttsToggleBtn" type="button">
+                                <span><i class="bi bi-volume-up me-2 text-info"></i>Text to Speech</span>
+                                <span class="badge bg-secondary rounded-pill" id="ttsBadge">Off</span>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Profile & Logout (When Authenticated) -->
+                {% if current_user.is_authenticated %}
+                <a href="{{ url_for('profile') }}" class="btn btn-sm btn-outline-primary rounded-pill px-3 fw-semibold" title="Profile">
+                    <i class="bi bi-person-circle me-1"></i>
+                    <span class="d-none d-md-inline">{{ current_user.username }}</span>
+                </a>
+                <a href="{{ url_for('logout') }}" class="btn btn-sm btn-outline-danger rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;" title="Logout">
+                    <i class="bi bi-box-arrow-right"></i>
+                </a>
+                {% else %}
+                <!-- Login & Register Buttons (When Logged Out) -->
+                <a href="{{ url_for('login') }}" class="btn btn-sm btn-outline-primary rounded-pill px-3 fw-semibold">Login</a>
+                <a href="{{ url_for('register') }}" class="btn btn-sm btn-auth-teal rounded-pill px-3 fw-semibold text-white">Register</a>
+                {% endif %}
             </div>
         </div>
-    </nav>
+    </header>
+    {% endif %}
+
+    <!-- Flash Messages Container -->
+    <div class="container mt-3">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show small py-2 rounded-3 shadow-sm" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close btn-close-sm" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- Main Content -->
     {% block content %}
     {% endblock %}
-    <nav class="navbar sticky-bottom bg-body-tertiary">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Sticky bottom</a>
+
+    {% if request.endpoint not in ['login', 'register', 'verify_otp', 'resend_otp', 'cognitive_mode'] %}
+    <!-- Bottom Navigation Bar Matching Image Mockup Exactly -->
+    <nav class="navbar fixed-bottom bg-white border-top py-2 shadow-sm" style="z-index: 1030; background-color: #FAF9F6 !important;">
+        <div class="container d-flex justify-content-around align-items-center text-center" style="max-width: 440px;">
+            <!-- Check Balance -->
+            <a href="{{ url_for('balance') if current_user.is_authenticated else url_for('login') }}" class="d-flex flex-column align-items-center text-decoration-none" style="gap: 4px;">
+                <div class="d-flex align-items-center justify-content-center rounded-3 shadow-sm" style="width: 48px; height: 38px; background-color: #F5EBE1; color: #334155;">
+                    <i class="bi bi-wallet2 fs-5"></i>
+                </div>
+                <span style="font-size: 9.5px; font-weight: 800; letter-spacing: 0.4px; color: #334155;">CHECK BALANCE</span>
+            </a>
+
+            <!-- Center PAY QR/UPI button matching Image 2 (Opens Camera Tab) -->
+            <a href="{{ url_for('pay', scan=1) if current_user.is_authenticated else url_for('login') }}" class="d-flex flex-column align-items-center text-decoration-none" style="gap: 4px;">
+                <div class="d-flex align-items-center justify-content-center rounded-3 shadow-sm" style="width: 48px; height: 44px; background-color: #0F8280; color: #ffffff;">
+                    <i class="bi bi-qr-code-scan fs-4"></i>
+                </div>
+                <span style="font-size: 9.5px; font-weight: 800; letter-spacing: 0.4px; color: #0F8280;">PAY QR/UPI</span>
+            </a>
+
+            <!-- History -->
+            <a href="{{ url_for('transactions') if current_user.is_authenticated else url_for('login') }}" class="d-flex flex-column align-items-center text-decoration-none" style="gap: 4px;">
+                <div class="d-flex align-items-center justify-content-center rounded-3 shadow-sm" style="width: 48px; height: 38px; background-color: #F5EBE1; color: #334155;">
+                    <i class="bi bi-clock-history fs-5"></i>
+                </div>
+                <span style="font-size: 9.5px; font-weight: 800; letter-spacing: 0.4px; color: #334155;">HISTORY</span>
+            </a>
         </div>
     </nav>
+    {% endif %}
+
+    <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>
+
+    <!-- Accessibility Scripts -->
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // 1. Colorblind / CVD Modes (Deuteranopia, Protanopia, Tritanopia, Default)
+        const cvdButtons = document.querySelectorAll('.cvd-select-btn');
+        let currentCvd = localStorage.getItem('cvd_mode') || 'default';
+
+        function applyCvdMode(mode) {
+            currentCvd = mode;
+            localStorage.setItem('cvd_mode', mode);
+            if (mode === 'default') {
+                document.documentElement.removeAttribute('data-cvd-mode');
+                document.documentElement.removeAttribute('data-colorblind');
+                localStorage.setItem('colorblind_mode', 'false');
+            } else {
+                document.documentElement.setAttribute('data-cvd-mode', mode);
+                document.documentElement.setAttribute('data-colorblind', 'true');
+                localStorage.setItem('colorblind_mode', 'true');
+            }
+
+            cvdButtons.forEach(btn => {
+                if (btn.dataset.cvd === mode) {
+                    btn.className = 'btn btn-sm btn-primary cvd-select-btn active';
+                } else {
+                    btn.className = 'btn btn-sm btn-outline-secondary cvd-select-btn';
+                }
+            });
+        }
+
+        applyCvdMode(currentCvd);
+
+        cvdButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const selectedMode = btn.dataset.cvd;
+                applyCvdMode(selectedMode);
+                if (ttsEnabled) {
+                    const modeNames = {
+                        'default': 'Default vision theme restored',
+                        'deuteranopia': 'Deuteranopia green blind palette activated',
+                        'protanopia': 'Protanopia red blind palette activated',
+                        'tritanopia': 'Tritanopia blue blind palette activated'
+                    };
+                    speakText(modeNames[selectedMode] || 'Colorblind mode updated');
+                }
+            });
+        });
+
+        // 2. Cognitive Mode
+        const cognitiveBtn = document.getElementById('cognitiveToggleBtn');
+        const cognitiveBadge = document.getElementById('cognitiveBadge');
+        let cognitiveActive = localStorage.getItem('cognitive_mode') === 'true';
+
+        function updateCognitiveUI() {
+            if (cognitiveActive) {
+                document.documentElement.setAttribute('data-cognitive', 'true');
+                if (cognitiveBadge) {
+                    cognitiveBadge.textContent = 'On';
+                    cognitiveBadge.className = 'badge bg-primary rounded-pill';
+                }
+            } else {
+                document.documentElement.removeAttribute('data-cognitive');
+                if (cognitiveBadge) {
+                    cognitiveBadge.textContent = 'Off';
+                    cognitiveBadge.className = 'badge bg-secondary rounded-pill';
+                }
+            }
+            localStorage.setItem('cognitive_mode', cognitiveActive ? 'true' : 'false');
+        }
+
+        updateCognitiveUI();
+
+        if (cognitiveBtn) {
+            cognitiveBtn.addEventListener('click', () => {
+                cognitiveActive = !cognitiveActive;
+                updateCognitiveUI();
+                if (ttsEnabled) speakText(`Cognitive mode ${cognitiveActive ? 'enabled' : 'disabled'}`);
+            });
+        }
+
+        // 3. Text to Speech (TTS) Mode
+        const ttsBtn = document.getElementById('ttsToggleBtn');
+        const ttsBadge = document.getElementById('ttsBadge');
+        let ttsEnabled = localStorage.getItem('tts_mode') === 'true';
+
+        function speakText(text) {
+            if (!('speechSynthesis' in window) || !text) return;
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.rate = 1.0;
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function updateTtsUI() {
+            if (ttsBadge) {
+                ttsBadge.textContent = ttsEnabled ? 'On' : 'Off';
+                ttsBadge.className = ttsEnabled ? 'badge bg-primary rounded-pill' : 'badge bg-secondary rounded-pill';
+            }
+            localStorage.setItem('tts_mode', ttsEnabled ? 'true' : 'false');
+        }
+
+        updateTtsUI();
+
+        if (ttsBtn) {
+            ttsBtn.addEventListener('click', () => {
+                ttsEnabled = !ttsEnabled;
+                updateTtsUI();
+                speakText(`Text to speech ${ttsEnabled ? 'enabled' : 'disabled'}`);
+            });
+        }
+
+        document.body.addEventListener('focusin', (e) => {
+            if (!ttsEnabled) return;
+            const target = e.target;
+            const text = target.getAttribute('aria-label') || target.innerText || target.placeholder || target.title;
+            if (text && text.trim()) speakText(text.trim());
+        });
+    });
+    </script>
 </body>
 
 </html>

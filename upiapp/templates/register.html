@@ -37,14 +37,28 @@
                 </div>
             </div>
 
-            <!-- Right Login Form Card -->
+            <!-- Right Register Form Card -->
             <div class="col-12 col-md-6 col-lg-5">
                 <div class="auth-card">
                     <div class="auth-card-body">
-                        <h2 class="auth-form-title">Log in</h2>
+                        <h2 class="auth-form-title">Create your account</h2>
 
-                        <form method="POST" novalidate id="loginForm">
+                        <form method="POST" novalidate id="registerForm">
                             {{ form.hidden_tag() }}
+
+                            <!-- Full Name / Username Field -->
+                            <div class="mb-3">
+                                <label class="form-label small fw-semibold text-dark mb-1" for="username">Full name</label>
+                                <div class="auth-input-group {% if form.username.errors %}is-invalid{% endif %}">
+                                    <span class="auth-input-icon">
+                                        <img src="{{ url_for('static', filename='svg/userlogo.svg') }}" width="20" height="20" alt="User">
+                                    </span>
+                                    {{ form.username(class="auth-input-field", id="username", placeholder="", autocomplete="name") }}
+                                </div>
+                                {% for error in form.username.errors %}
+                                    <div class="text-danger small mt-1">{{ error }}</div>
+                                {% endfor %}
+                            </div>
 
                             <!-- Email Field -->
                             <div class="mb-3">
@@ -61,34 +75,51 @@
                             </div>
 
                             <!-- Password Field -->
-                            <div class="mb-3">
+                            <div class="mb-2">
                                 <label class="form-label small fw-semibold text-dark mb-1" for="password">Password</label>
                                 <div class="auth-input-group {% if form.password.errors %}is-invalid{% endif %}">
                                     <span class="auth-input-icon">
                                         <img src="{{ url_for('static', filename='svg/lock.svg') }}" width="20" height="20" alt="Password">
                                     </span>
-                                    {{ form.password(class="auth-input-field", id="password", placeholder="", autocomplete="current-password") }}
+                                    {{ form.password(class="auth-input-field", id="password", placeholder="", autocomplete="new-password") }}
                                     <button type="button" class="auth-toggle-password" data-target="password" aria-label="Toggle password visibility">
                                         <img src="{{ url_for('static', filename='svg/eye-open.svg') }}" class="eye-icon" width="20" height="20" alt="Toggle visibility">
                                     </button>
                                 </div>
+                                <small class="text-muted d-block mt-1" style="font-size: 0.78rem;">Use at least 8 characters</small>
                                 {% for error in form.password.errors %}
                                     <div class="text-danger small mt-1">{{ error }}</div>
                                 {% endfor %}
                             </div>
 
-                            <!-- Remember me & Forgot Password -->
-                            <div class="d-flex justify-content-between align-items-center mb-4">
-                                <div class="form-check">
-                                    {{ form.remember(class="form-check-input", id="remember") }}
-                                    <label class="form-check-label small text-muted" for="remember">Remember me</label>
+                            <!-- Confirm Password Field -->
+                            <div class="mb-3">
+                                <label class="form-label small fw-semibold text-dark mb-1" for="pass_conf">Confirm password</label>
+                                <div class="auth-input-group {% if form.pass_conf.errors %}is-invalid{% endif %}">
+                                    <span class="auth-input-icon">
+                                        <img src="{{ url_for('static', filename='svg/lock.svg') }}" width="20" height="20" alt="Confirm Password">
+                                    </span>
+                                    {{ form.pass_conf(class="auth-input-field", id="pass_conf", placeholder="", autocomplete="new-password") }}
+                                    <button type="button" class="auth-toggle-password" data-target="pass_conf" aria-label="Toggle password visibility">
+                                        <img src="{{ url_for('static', filename='svg/eye-open.svg') }}" class="eye-icon" width="20" height="20" alt="Toggle visibility">
+                                    </button>
                                 </div>
-                                <a href="#" class="small text-decoration-none" style="color: #0b707e;">Forgot password?</a>
+                                {% for error in form.pass_conf.errors %}
+                                    <div class="text-danger small mt-1">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <!-- Terms & Privacy Policy Checkbox -->
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="checkbox" id="termsCheck" required checked>
+                                <label class="form-check-label small text-muted" for="termsCheck">
+                                    I agree to the <a href="#" class="auth-link-navy">Terms</a>, and <a href="#" class="auth-link-navy">Privacy Policy</a>
+                                </label>
                             </div>
 
                             <!-- Submit Button -->
                             <div class="d-grid mb-3">
-                                <button type="submit" class="btn btn-auth-navy">Log in</button>
+                                <button type="submit" class="btn btn-auth-teal">Create account</button>
                             </div>
                         </form>
 
@@ -107,7 +138,7 @@
 
                         <!-- Footer -->
                         <p class="text-center mb-0 small text-muted">
-                            New here? <a href="{{ url_for('register') }}" class="auth-link">Create an account</a>
+                            Already have an account? <a href="{{ url_for('login') }}" class="auth-link">Log in</a>
                         </p>
                     </div>
                 </div>

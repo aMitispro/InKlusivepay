@@ -1,0 +1,417 @@
+/* ====================================================
+   InKlusivepay Universal & Color Vision Deficiency (CVD) System
+   WCAG 2.1 AAA Compliant Design System
+   ==================================================== */
+
+:root,
+.theme-default {
+    --cvd-bg: #FAF9F6;
+    --cvd-card-bg: #ffffff;
+    --cvd-primary: #0F8280;
+    --cvd-primary-hover: #0c6967;
+    --cvd-secondary: #0F2B48;
+    --cvd-secondary-hover: #0a1e33;
+    --cvd-text-primary: #0f172a;
+    --cvd-text-muted: #64748b;
+    --cvd-success: #0F8280;
+    --cvd-danger: #991B1B;
+    --cvd-warning: #D97706;
+    --cvd-border: #e2e8f0;
+    --cvd-border-width: 1px;
+    --cvd-focus: #0F8280;
+    --cvd-badge-bg: #D4F4EE;
+    --cvd-badge-text: #0F8280;
+
+    /* Legacy compatibility tokens */
+    --auth-bg: var(--cvd-bg);
+    --auth-teal: var(--cvd-primary);
+    --auth-teal-hover: var(--cvd-primary-hover);
+    --auth-navy: var(--cvd-secondary);
+    --auth-navy-hover: var(--cvd-secondary-hover);
+    --brand-teal: var(--cvd-primary);
+}
+
+/* ====================================================
+   1. DEUTERANOPIA PALETTE (Green-Blind / Green-Weak)
+   Wong / WCAG AAA Palette: Cobalt Blue & Vermilion
+   ==================================================== */
+html[data-cvd-mode="deuteranopia"],
+.theme-deuteranopia {
+    --cvd-bg: #FFFFFF;
+    --cvd-card-bg: #FFFFFF;
+    --cvd-primary: #005AB5;         /* High-Contrast Cobalt Blue (8.5:1) */
+    --cvd-primary-hover: #003D7A;
+    --cvd-secondary: #111827;       /* Deep Charcoal */
+    --cvd-secondary-hover: #000000;
+    --cvd-text-primary: #000000;
+    --cvd-text-muted: #374151;
+    --cvd-success: #005AB5;         /* Accessible Blue for Credit/Positive */
+    --cvd-danger: #D55E00;          /* Vermilion for Debit/Alert */
+    --cvd-warning: #E69F00;         /* Amber Yellow */
+    --cvd-border: #000000;
+    --cvd-border-width: 2.5px;
+    --cvd-focus: #005AB5;
+    --cvd-badge-bg: #E0EEFF;
+    --cvd-badge-text: #005AB5;
+}
+
+/* ====================================================
+   2. PROTANOPIA PALETTE (Red-Blind / Red-Weak)
+   Tol / WCAG AAA Palette: Deep Navy & Amber Gold
+   ==================================================== */
+html[data-cvd-mode="protanopia"],
+.theme-protanopia {
+    --cvd-bg: #FFFFFF;
+    --cvd-card-bg: #FFFFFF;
+    --cvd-primary: #004488;         /* Deep Navy Blue (9:1) */
+    --cvd-primary-hover: #002B59;
+    --cvd-secondary: #111827;
+    --cvd-secondary-hover: #000000;
+    --cvd-text-primary: #000000;
+    --cvd-text-muted: #262626;
+    --cvd-success: #004488;         /* Deep Blue for Credit */
+    --cvd-danger: #DDAA33;          /* Bright Amber Gold for Debit/Alert */
+    --cvd-warning: #DDAA33;
+    --cvd-border: #000000;
+    --cvd-border-width: 2.5px;
+    --cvd-focus: #004488;
+    --cvd-badge-bg: #FFF3D6;
+    --cvd-badge-text: #004488;
+}
+
+/* ====================================================
+   3. TRITANOPIA PALETTE (Blue-Blind / Blue-Weak)
+   Tol / WCAG AAA Palette: Dark Teal & Vivid Crimson
+   ==================================================== */
+html[data-cvd-mode="tritanopia"],
+.theme-tritanopia {
+    --cvd-bg: #FFFFFF;
+    --cvd-card-bg: #FFFFFF;
+    --cvd-primary: #009988;         /* Vivid Dark Teal (7.5:1) */
+    --cvd-primary-hover: #006655;
+    --cvd-secondary: #111827;
+    --cvd-secondary-hover: #000000;
+    --cvd-text-primary: #000000;
+    --cvd-text-muted: #333333;
+    --cvd-success: #009988;         /* Dark Teal for Credit */
+    --cvd-danger: #CC3311;          /* Vivid Crimson for Debit */
+    --cvd-warning: #EE7733;         /* Bright Orange */
+    --cvd-border: #000000;
+    --cvd-border-width: 2.5px;
+    --cvd-focus: #009988;
+    --cvd-badge-bg: #E6F7F5;
+    --cvd-badge-text: #009988;
+}
+
+/* ====================================================
+   UNIVERSAL HIGH-CONTRAST COLORBLIND MODE
+   ==================================================== */
+html[data-colorblind="true"] {
+    --cvd-bg: #FFFFFF;
+    --cvd-card-bg: #FFFFFF;
+    --cvd-primary: #005AB5;
+    --cvd-primary-hover: #003D7A;
+    --cvd-secondary: #000000;
+    --cvd-secondary-hover: #111827;
+    --cvd-text-primary: #000000;
+    --cvd-text-muted: #1F2937;
+    --cvd-success: #005AB5;
+    --cvd-danger: #D55E00;
+    --cvd-warning: #E69F00;
+    --cvd-border: #000000;
+    --cvd-border-width: 2.5px;
+    --cvd-focus: #000000;
+    --cvd-badge-bg: #EEEEEE;
+    --cvd-badge-text: #000000;
+}
+
+/* Base Body Styles */
+body {
+    background-color: var(--cvd-bg) !important;
+    color: var(--cvd-text-primary);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    padding-bottom: 85px;
+}
+
+/* Universal Button Styles mapped to CVD Variables */
+.btn-primary,
+.btn-auth-teal,
+.btn-family-primary {
+    background-color: var(--cvd-primary) !important;
+    border-color: var(--cvd-primary) !important;
+    color: #ffffff !important;
+    font-weight: 700;
+    transition: all 0.2s ease;
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-auth-teal:hover,
+.btn-auth-teal:focus,
+.btn-family-primary:hover,
+.btn-family-primary:focus {
+    background-color: var(--cvd-primary-hover) !important;
+    border-color: var(--cvd-primary-hover) !important;
+    color: #ffffff !important;
+}
+
+.btn-outline-primary {
+    border-color: var(--cvd-primary) !important;
+    color: var(--cvd-primary) !important;
+    font-weight: 700;
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary:focus {
+    background-color: var(--cvd-primary) !important;
+    border-color: var(--cvd-primary) !important;
+    color: #ffffff !important;
+}
+
+.btn-auth-navy {
+    background-color: var(--cvd-secondary) !important;
+    border-color: var(--cvd-secondary) !important;
+    color: #ffffff !important;
+    font-weight: 700;
+}
+
+.btn-auth-navy:hover,
+.btn-auth-navy:focus {
+    background-color: var(--cvd-secondary-hover) !important;
+    border-color: var(--cvd-secondary-hover) !important;
+    color: #ffffff !important;
+}
+
+.text-teal {
+    color: var(--cvd-primary) !important;
+}
+.bg-teal {
+    background-color: var(--cvd-primary) !important;
+}
+.border-teal {
+    border-color: var(--cvd-primary) !important;
+}
+
+/* Auth Cards */
+.auth-page-wrapper {
+    background-color: var(--cvd-bg);
+    min-height: calc(100vh - 120px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+}
+
+.auth-container {
+    max-width: 1040px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.auth-left-panel {
+    background-color: var(--cvd-bg);
+    border-radius: 20px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.auth-card {
+    background-color: var(--cvd-card-bg);
+    border: var(--cvd-border-width) solid var(--cvd-border);
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(15, 43, 72, 0.04);
+    overflow: hidden;
+}
+
+.auth-card-body {
+    padding: 2.25rem 2.25rem;
+}
+
+.auth-form-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--cvd-secondary);
+    text-align: center;
+    margin-bottom: 1.75rem;
+}
+
+/* Input Fields */
+.auth-input-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+    border: var(--cvd-border-width) solid var(--cvd-primary);
+    border-radius: 10px;
+    background-color: #ffffff;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    overflow: hidden;
+}
+
+.auth-input-group:focus-within {
+    border-color: var(--cvd-primary);
+    box-shadow: 0 0 0 3px rgba(0, 90, 181, 0.2);
+}
+
+.auth-input-group.is-invalid {
+    border-color: var(--cvd-danger);
+}
+
+.auth-input-icon {
+    padding-left: 12px;
+    padding-right: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.auth-input-icon img {
+    width: 20px;
+    height: 20px;
+    display: block;
+}
+
+.auth-input-field {
+    border: none;
+    outline: none;
+    box-shadow: none !important;
+    width: 100%;
+    padding: 11px 12px 11px 4px;
+    font-size: 0.95rem;
+    color: var(--cvd-text-primary);
+    background-color: transparent;
+}
+
+.auth-toggle-password {
+    background: none;
+    border: none;
+    padding: 0 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.auth-toggle-password img {
+    width: 20px;
+    height: 20px;
+}
+
+.btn-auth-google {
+    background-color: #ffffff;
+    border: 1.5px solid #1e293b;
+    color: #1e293b;
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 0.65rem 1rem;
+    border-radius: 10px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+}
+
+.btn-auth-google:hover {
+    background-color: #f8fafc;
+    color: var(--cvd-secondary);
+}
+
+.auth-divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 1.25rem 0;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid var(--cvd-border);
+}
+
+.auth-divider span {
+    padding: 0 1rem;
+    color: var(--cvd-text-muted);
+    font-size: 0.85rem;
+}
+
+.auth-link {
+    color: var(--cvd-primary);
+    text-decoration: underline;
+    font-weight: 700;
+}
+
+.auth-link:hover {
+    color: var(--cvd-primary-hover);
+}
+
+.auth-link-navy {
+    color: var(--cvd-secondary);
+    text-decoration: underline;
+    font-weight: 700;
+}
+
+/* ====================================================
+   BEYOND COLOR: STRUCTURAL CVD ADJUSTMENTS
+   ==================================================== */
+html[data-colorblind="true"],
+html[data-cvd-mode="deuteranopia"],
+html[data-cvd-mode="protanopia"],
+html[data-cvd-mode="tritanopia"] {
+    /* 1. Bold Non-color Status Indicators */
+    .text-success {
+        color: var(--cvd-success) !important;
+        font-weight: 800 !important;
+    }
+    .text-danger {
+        color: var(--cvd-danger) !important;
+        font-weight: 800 !important;
+    }
+    .text-warning {
+        color: var(--cvd-warning) !important;
+        font-weight: 800 !important;
+    }
+
+    /* 2. Visual Prefix Symbols (Do not rely on color alone) */
+    .text-success::before {
+        content: "✓ ";
+        font-weight: 900;
+    }
+    .text-danger::before {
+        content: "✖ ";
+        font-weight: 900;
+    }
+
+    /* 3. High-Contrast Structural Borders */
+    .card,
+    .home-mode-card,
+    .home-txn-card,
+    .cog-card,
+    .auth-card {
+        border: 2.5px solid var(--cvd-border) !important;
+        box-shadow: none !important;
+    }
+
+    .auth-input-group {
+        border: 2.5px solid var(--cvd-border) !important;
+    }
+
+    /* 4. Link & Focus Underlining */
+    a {
+        text-decoration: underline !important;
+        text-underline-offset: 3px;
+        font-weight: 700;
+    }
+
+    /* 5. Clear Badge Borders & Text Contrast */
+    .badge {
+        border: 2px solid var(--cvd-border) !important;
+        font-weight: 800 !important;
+    }
+}

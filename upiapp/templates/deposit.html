@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% block title %}
+    Add Money - InKlusivepay
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+
+            <div class="card border rounded-4 p-4 mb-3 bg-white shadow-sm">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <a href="{{ url_for('balance') }}" class="btn btn-sm btn-outline-secondary rounded-pill px-3">
+                        <i class="bi bi-arrow-left me-1"></i>Wallet
+                    </a>
+                    <div class="text-end">
+                        <small class="text-muted d-block">Current Balance</small>
+                        <span class="fw-bold text-primary fs-5">₹{{ "%.2f"|format(current_balance) }}</span>
+                    </div>
+                </div>
+
+                <div class="text-center mb-3">
+                    <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-2" style="width: 52px; height: 52px; background-color: rgba(11, 112, 126, 0.1);">
+                        <i class="bi bi-wallet2 fs-4 text-teal" style="color: #0b707e;"></i>
+                    </div>
+                    <h5 class="fw-bold mb-1 text-dark">Add Money to Wallet</h5>
+                    <p class="text-muted small">Top up your InKlusivepay balance instantly</p>
+                </div>
+
+                <form method="POST" novalidate id="depositForm">
+                    {{ form.hidden_tag() }}
+
+                    <!-- Amount Input -->
+                    <div class="mb-3">
+                        <label class="form-label small fw-semibold text-dark">Deposit Amount</label>
+                        <div class="input-group input-group-lg border rounded-3 overflow-hidden">
+                            <span class="input-group-text bg-light fw-bold border-0">₹</span>
+                            {{ form.amount(class="form-control fw-bold border-0", id="depositAmountInput", placeholder="500.00", step="0.01", min="1", max="100000") }}
+                        </div>
+                        {% for error in form.amount.errors %}
+                            <div class="text-danger small mt-1">{{ error }}</div>
+                        {% endfor %}
+
+                        <!-- Quick Deposit Preset Chips -->
+                        <div class="d-flex flex-wrap gap-2 mt-2">
+                            <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill deposit-chip" data-amount="100">+ ₹100</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill deposit-chip" data-amount="500">+ ₹500</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill deposit-chip" data-amount="1000">+ ₹1,000</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill deposit-chip" data-amount="2000">+ ₹2,000</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill deposit-chip" data-amount="5000">+ ₹5,000</button>
+                        </div>
+                    </div>
+
+                    <!-- Payment Mode Selection with 4 Bank Options -->
+                    <div class="mb-4">
+                        <label class="form-label small text-muted text-uppercase fw-semibold">Select Bank Source (4 Options)</label>
+                        <div class="list-group gap-2">
+                            <!-- Bank 1 -->
+                            <label class="list-group-item d-flex gap-3 align-items-center rounded-3 border p-2">
+                                <input class="form-check-input flex-shrink-0" type="radio" name="source" value="bank1" checked>
+                                <i class="bi bi-bank fs-4 text-primary"></i>
+                                <div>
+                                    <strong class="d-block text-dark small">Bank 1: HDFC Bank</strong>
+                                    <small class="text-muted" style="font-size: 0.75rem;">Account •••• 4291 • Primary</small>
+                                </div>
+                            </label>
+
+                            <!-- Bank 2 -->
+                            <label class="list-group-item d-flex gap-3 align-items-center rounded-3 border p-2">
+                                <input class="form-check-input flex-shrink-0" type="radio" name="source" value="bank2">
+                                <i class="bi bi-bank fs-4 text-success"></i>
+                                <div>
+                                    <strong class="d-block text-dark small">Bank 2: State Bank of India (SBI)</strong>
+                                    <small class="text-muted" style="font-size: 0.75rem;">Account •••• 8832</small>
+                                </div>
+                            </label>
+
+                            <!-- Bank 3 -->
+                            <label class="list-group-item d-flex gap-3 align-items-center rounded-3 border p-2">
+                                <input class="form-check-input flex-shrink-0" type="radio" name="source" value="bank3">
+                                <i class="bi bi-bank fs-4 text-danger"></i>
+                                <div>
+                                    <strong class="d-block text-dark small">Bank 3: ICICI Bank</strong>
+                                    <small class="text-muted" style="font-size: 0.75rem;">Account •••• 1045</small>
+                                </div>
+                            </label>
+
+                            <!-- Bank 4 -->
+                            <label class="list-group-item d-flex gap-3 align-items-center rounded-3 border p-2">
+                                <input class="form-check-input flex-shrink-0" type="radio" name="source" value="bank4">
+                                <i class="bi bi-bank fs-4 text-warning"></i>
+                                <div>
+                                    <strong class="d-block text-dark small">Bank 4: Axis Bank</strong>
+                                    <small class="text-muted" style="font-size: 0.75rem;">Account •••• 6712</small>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Submit -->
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-auth-teal py-2">
+                            <i class="bi bi-plus-circle me-1"></i>Add Money Instantly
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="text-center text-muted small">
+                <i class="bi bi-shield-check me-1 text-success"></i>100% Secure Instant Settlement
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const depositInput = document.getElementById('depositAmountInput');
+    document.querySelectorAll('.deposit-chip').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const addVal = parseFloat(btn.dataset.amount) || 0;
+            const currentVal = parseFloat(depositInput.value) || 0;
+            depositInput.value = (currentVal + addVal).toFixed(2);
+        });
+    });
+});
+</script>
+{% endblock %}
