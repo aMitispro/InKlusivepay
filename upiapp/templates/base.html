@@ -116,22 +116,18 @@
     <!-- Unified Brand Upper Navbar with Centered Logo, Modes, Login/Register & Profile -->
     <header class="border-bottom py-2 bg-white shadow-sm sticky-top">
         <div class="container d-flex justify-content-between align-items-center position-relative">
-            <!-- Left: Brand / Home Link -->
-            <div class="d-flex align-items-center">
-                <a class="text-decoration-none d-flex align-items-center" href="{{ url_for('home') }}">
+            <!-- Left Empty Placeholder for balancing -->
+            <div class="d-none d-md-block" style="min-width: 80px;"></div>
+
+            <!-- Single Centered App Logo -->
+            <div class="position-absolute start-50 translate-middle-x text-center">
+                <a class="text-decoration-none d-inline-block" href="{{ url_for('home') }}">
                     <img src="{{ url_for('static', filename='img/brand_header_logo.png') }}" style="height: 38px; width: auto; object-fit: contain;" alt="InKlusiv Pay">
                 </a>
             </div>
 
-            <!-- Center: App Logo (Centered) -->
-            <div class="position-absolute start-50 translate-middle-x d-none d-md-block text-center">
-                <a class="text-decoration-none d-inline-block" href="{{ url_for('home') }}">
-                    <img src="{{ url_for('static', filename='img/navbar_logo.png') }}" style="height: 40px; width: auto; object-fit: contain;" alt="InKlusiv Pay">
-                </a>
-            </div>
-
             <!-- Right Controls: Quick Modes, Profile, Logout -->
-            <div class="d-flex align-items-center gap-2">
+            <div class="d-flex align-items-center gap-2 ms-auto">
                 <!-- Accessibility Quick Modes Dropdown -->
                 <div class="dropdown">
                     <button class="btn btn-secondary dropdown-toggle d-flex align-items-center gap-2" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="Accessibility Quick Modes">
