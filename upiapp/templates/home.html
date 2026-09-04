@@ -172,40 +172,43 @@
 
 <div class="home-phone-wrapper pt-3">
 
-    <!-- 1. Digital Balance Card (Mockup Exact Match) -->
-    <div class="home-digital-card">
-        <div class="home-card-decor-outer"></div>
-        <div class="home-card-decor-inner"></div>
-
+    <!-- 1. Digital Wallet / Balance Card -->
+    <div class="card border rounded-4 p-4 mb-3 bg-white shadow-sm">
         <!-- Top row: Avatar + Name + ID + Bell -->
         <div class="d-flex justify-content-between align-items-center mb-3">
             <div class="d-flex align-items-center gap-2">
-                <img src="{{ url_for('static', filename='img/default_avatar.png') }}" class="home-card-avatar" alt="User">
+                <img src="{{ url_for('static', filename='img/default_avatar.png') }}" class="rounded-circle border" width="40" height="40" alt="User">
                 <div>
                     <div class="d-flex align-items-center gap-1">
-                        <strong class="text-white" style="font-size: 15px;">{{ current_user.username|capitalize }}</strong>
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="#0F8280">
-                            <circle cx="12" cy="12" r="10" fill="#0F8280"/>
-                            <path d="M9 12l2 2 4-4" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
+                        <strong class="text-dark" style="font-size: 15px;">{{ current_user.username|capitalize }}</strong>
+                        <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill py-0 px-2" style="font-size: 10px;">Active</span>
                     </div>
-                    <small style="color: #94a3b8; font-size: 11px;">ID •••• {{ "%04d"|format(current_user.id) }}</small>
+                    <small class="text-muted" style="font-size: 11px;">UPI ID: {{ current_user.username }}@inklusive</small>
                 </div>
             </div>
-            <a href="{{ url_for('family_circle') }}" class="home-card-bell" title="Notifications & Circle">
-                <i class="bi bi-bell fs-6"></i>
+            <a href="{{ url_for('family_circle') }}" class="btn btn-sm btn-light border rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px;" title="Notifications & Circle">
+                <i class="bi bi-bell text-secondary"></i>
             </a>
         </div>
 
         <!-- Total Balance -->
-        <div class="home-card-balance-label">
-            <span>TOTAL BALANCE</span>
-            <button type="button" class="btn btn-link text-white p-0 text-decoration-none d-inline-flex align-items-center" id="toggleBalanceEye" title="Toggle visibility">
-                <img src="{{ url_for('static', filename='svg/eye.svg') }}" id="eyeIconImg" width="16" height="16" alt="Eye" style="filter: brightness(0) invert(0.85);">
-            </button>
+        <div class="d-flex justify-content-between align-items-end pt-2 border-top">
+            <div>
+                <div class="text-muted small text-uppercase fw-semibold d-flex align-items-center gap-2">
+                    <span>Available Balance</span>
+                    <button type="button" class="btn btn-link text-secondary p-0 text-decoration-none d-inline-flex align-items-center" id="toggleBalanceEye" title="Toggle visibility">
+                        <img src="{{ url_for('static', filename='svg/eye.svg') }}" id="eyeIconImg" width="16" height="16" alt="Eye">
+                    </button>
+                </div>
+                <div class="display-6 fw-bold mt-1 mb-0 text-dark" id="balanceAmountDisplay" style="color: #0F2B48 !important;">₹{{ "{:,.2f}".format(balance if balance is not none else 0.00) }}</div>
+            </div>
+            <div>
+                <a href="{{ url_for('deposit') }}" class="btn btn-sm btn-outline-primary rounded-pill px-3 fw-bold d-inline-flex align-items-center gap-1">
+                    <img src="{{ url_for('static', filename='svg/add.svg') }}" width="14" height="14" alt="Add">
+                    <span>Add Money</span>
+                </a>
+            </div>
         </div>
-        <div class="home-card-balance-val" id="balanceAmountDisplay">₹{{ "{:,.2f}".format(balance if balance is not none else 12450.00) }}</div>
-        <div class="home-card-subtext">+₹320.40 this month</div>
     </div>
 
     <!-- 2. Add Family Supervision Section (Mockup Exact Match) -->
@@ -292,42 +295,17 @@
             </div>
             {% endfor %}
         {% else %}
-            <!-- Mock Visual Transactions matching Image 2 perfectly -->
-            <div class="home-txn-card">
-                <div class="d-flex align-items-center gap-3">
-                    <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width: 42px; height: 42px; background-color: #F5EBE1; color: #475569; font-size: 15px;">S</div>
-                    <div>
-                        <strong class="d-block text-dark" style="font-size: 14.5px;">Supermarket Central</strong>
-                        <small class="text-muted" style="font-size: 12px;">Oct 24 • 10:30 AM</small>
-                    </div>
+            <!-- Empty state when no transactions exist -->
+            <div class="card border rounded-4 p-4 text-center bg-white shadow-sm">
+                <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-2 mx-auto" style="width: 48px; height: 48px; background-color: #F1F5F9; color: #64748b;">
+                    <img src="{{ url_for('static', filename='svg/send.svg') }}" width="22" height="22" alt="Send">
                 </div>
-                <div class="text-end">
-                    <span class="fw-bold" style="font-size: 15.5px; color: #991B1B;">-₹45.20</span>
-                </div>
-            </div>
-            <div class="home-txn-card">
-                <div class="d-flex align-items-center gap-3">
-                    <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width: 42px; height: 42px; background-color: #F5EBE1; color: #475569; font-size: 15px;">M</div>
-                    <div>
-                        <strong class="d-block text-dark" style="font-size: 14.5px;">Metro Pass Reload</strong>
-                        <small class="text-muted" style="font-size: 12px;">Oct 23 • 08:15 PM</small>
-                    </div>
-                </div>
-                <div class="text-end">
-                    <span class="fw-bold" style="font-size: 15.5px; color: #991B1B;">-₹20.00</span>
-                </div>
-            </div>
-            <div class="home-txn-card">
-                <div class="d-flex align-items-center gap-3">
-                    <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width: 42px; height: 42px; background-color: #F5EBE1; color: #475569; font-size: 15px;">J</div>
-                    <div>
-                        <strong class="d-block text-dark" style="font-size: 14.5px;">James Wilson</strong>
-                        <small class="text-muted" style="font-size: 12px;">Oct 22 • 02:45 PM</small>
-                    </div>
-                </div>
-                <div class="text-end">
-                    <span class="fw-bold" style="font-size: 15.5px; color: #0F8280;">+₹120.00</span>
-                </div>
+                <h6 class="fw-bold text-dark mb-1">No transactions yet</h6>
+                <p class="text-muted small mb-3">Make your first instant UPI payment or transfer funds safely.</p>
+                <a href="{{ url_for('pay') }}" class="btn btn-auth-teal btn-sm rounded-pill px-4 fw-bold mx-auto d-inline-flex align-items-center gap-1">
+                    <img src="{{ url_for('static', filename='svg/send.svg') }}" width="15" height="15" alt="Pay" style="filter: brightness(0) invert(1);">
+                    <span>Make First Payment</span>
+                </a>
             </div>
         {% endif %}
     </div>

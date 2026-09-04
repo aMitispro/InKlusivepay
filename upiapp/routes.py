@@ -1,4 +1,5 @@
 import os
+from os import getenv
 import random
 import re
 from datetime import datetime, timezone
@@ -287,11 +288,38 @@ def login():
     return render_template("login.html", title="Login", form=form)
 
 
+def _get_google_redirect_uri() -> str:
+    """
+    Returns the exact authorized OAuth callback redirect URI for Google.
+    Prioritizes GOOGLE_REDIRECT_URI / GOOGLE_OAUTH_REDIRECT_URI environment variables if set.
+    Otherwise standardizes url_for('google_callback') to http://localhost:5000/login/google/callback
+    for local development (avoiding 127.0.0.1 / localhost mismatches).
+    """
+    env_uri = getenv("GOOGLE_REDIRECT_URI") or getenv("GOOGLE_OAUTH_REDIRECT_URI")
+    if env_uri and env_uri.strip():
+        return env_uri.strip()
+
+    try:
+        uri = url_for("google_callback", _external=True)
+    except Exception:
+        uri = "http://localhost:5000/login/google/callback"
+
+    # Normalize 127.0.0.1 -> localhost for local development consistency
+    if "127.0.0.1" in uri:
+        uri = uri.replace("127.0.0.1", "localhost")
+
+    if uri.endswith("/"):
+        uri = uri.rstrip("/")
+
+    return uri
+
+
 @app.route("/login/google")
 def google_login():
     if current_user.is_authenticated:
         return redirect(url_for("home"))
-    redirect_uri = url_for("google_callback", _external=True)
+    redirect_uri = _get_google_redirect_uri()
+    app.logger.info("Initiating Google OAuth login with redirect_uri: %s", redirect_uri)
     return oauth.inclusiv_client.authorize_redirect(redirect_uri)
 
 
@@ -300,10 +328,16 @@ def google_callback():
     if current_user.is_authenticated:
         return redirect(url_for("home"))
 
+    redirect_uri = _get_google_redirect_uri()
+    app.logger.info("Exchanging Google OAuth token with redirect_uri: %s", redirect_uri)
+
     try:
-        token = oauth.inclusiv_client.authorize_access_token()
+        try:
+            token = oauth.inclusiv_client.authorize_access_token(redirect_uri=redirect_uri)
+        except TypeError:
+            token = oauth.inclusiv_client.authorize_access_token()
     except Exception:
-        current_app.logger.exception("Google OAuth token exchange failed")
+        app.logger.exception("Google OAuth token exchange failed for redirect_uri: %s", redirect_uri)
         flash("Google login failed. Check authorized redirect URI in Google Cloud Console.", "danger")
         return redirect(url_for("login"))
 
