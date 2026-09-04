@@ -180,7 +180,7 @@
         <!-- Top row: Avatar + Name + ID + Bell -->
         <div class="d-flex justify-content-between align-items-center mb-3">
             <div class="d-flex align-items-center gap-2">
-                <img src="{{ url_for('static', filename='img/alex_avatar.png') }}" class="home-card-avatar" alt="User">
+                <img src="{{ url_for('static', filename='img/default_avatar.png') }}" class="home-card-avatar" alt="User">
                 <div>
                     <div class="d-flex align-items-center gap-1">
                         <strong class="text-white" style="font-size: 15px;">{{ current_user.username|capitalize }}</strong>
@@ -200,8 +200,8 @@
         <!-- Total Balance -->
         <div class="home-card-balance-label">
             <span>TOTAL BALANCE</span>
-            <button type="button" class="btn btn-link text-white p-0 text-decoration-none" id="toggleBalanceEye" title="Toggle visibility">
-                <i class="bi bi-eye" id="eyeIcon" style="font-size: 14px; color: #cbd5e1;"></i>
+            <button type="button" class="btn btn-link text-white p-0 text-decoration-none d-inline-flex align-items-center" id="toggleBalanceEye" title="Toggle visibility">
+                <img src="{{ url_for('static', filename='svg/eye.svg') }}" id="eyeIconImg" width="16" height="16" alt="Eye" style="filter: brightness(0) invert(0.85);">
             </button>
         </div>
         <div class="home-card-balance-val" id="balanceAmountDisplay">₹{{ "{:,.2f}".format(balance if balance is not none else 12450.00) }}</div>
@@ -214,7 +214,7 @@
         <a href="{{ url_for('family_circle') }}" class="home-family-btn">
             <div class="d-flex align-items-center gap-3">
                 <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; background: rgba(255,255,255,0.2);">
-                    <i class="bi bi-people fs-5"></i>
+                    <img src="{{ url_for('static', filename='svg/family.svg') }}" width="22" height="22" alt="Family" style="filter: brightness(0) invert(1);">
                 </div>
                 <span style="font-size: 15px; font-weight: 700;">Family circle</span>
             </div>
@@ -232,7 +232,7 @@
         <!-- Colorblind Mode -->
         <div class="home-mode-card" id="cardColorblind" title="Click to toggle High Contrast Colorblind Mode">
             <div class="home-mode-icon-box" style="background-color: #D4F4EE; color: #0F8280;">
-                <i class="bi bi-eye fs-4"></i>
+                <img src="{{ url_for('static', filename='svg/eye.svg') }}" width="24" height="24" alt="Colorblind Eye" style="filter: invert(36%) sepia(82%) saturate(830%) hue-rotate(137deg) brightness(92%) contrast(92%);">
             </div>
             <div>
                 <strong class="d-block text-dark" style="font-size: 15px;">Colorblind Mode</strong>
@@ -243,7 +243,7 @@
         <!-- Cognitive Mode (Navigates to Image 1 Screen) -->
         <a href="{{ url_for('cognitive_mode') }}" class="home-mode-card" id="cardCognitive">
             <div class="home-mode-icon-box" style="background-color: #F5EBE1; color: #1e293b;">
-                <i class="bi bi-brain fs-4"></i>
+                <img src="{{ url_for('static', filename='svg/cognitive.svg') }}" width="24" height="24" alt="Cognitive">
             </div>
             <div>
                 <strong class="d-block text-dark" style="font-size: 15px;">Cognitive Mode</strong>
@@ -430,20 +430,20 @@ document.addEventListener('DOMContentLoaded', () => {
     // 1. Balance Eye Visibility Toggle
     const toggleEye = document.getElementById('toggleBalanceEye');
     const balanceDisplay = document.getElementById('balanceAmountDisplay');
-    const eyeIcon = document.getElementById('eyeIcon');
-    const actualBalance = balanceDisplay.textContent;
+    const eyeIconImg = document.getElementById('eyeIconImg');
+    const actualBalance = balanceDisplay ? balanceDisplay.textContent : '';
     let isHidden = false;
 
-    if (toggleEye && balanceDisplay) {
+    if (toggleEye && balanceDisplay && eyeIconImg) {
         toggleEye.addEventListener('click', (e) => {
             e.stopPropagation();
             isHidden = !isHidden;
             if (isHidden) {
                 balanceDisplay.textContent = '••••••••';
-                eyeIcon.className = 'bi bi-eye-slash';
+                eyeIconImg.src = "{{ url_for('static', filename='svg/closed-eye.svg') }}";
             } else {
                 balanceDisplay.textContent = actualBalance;
-                eyeIcon.className = 'bi bi-eye';
+                eyeIconImg.src = "{{ url_for('static', filename='svg/eye.svg') }}";
             }
         });
     }

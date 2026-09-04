@@ -18,13 +18,23 @@
             </div>
 
             <!-- Profile Info Card -->
-            <div class="card border rounded-4 p-4 mb-3 text-center bg-white shadow-sm">
-                <div class="rounded-circle text-white d-inline-flex justify-content-center align-items-center mx-auto mb-2 shadow-sm"
-                     style="width: 64px; height: 64px; font-size: 1.75rem; font-weight: bold; background: linear-gradient(135deg, #0f2b48, #0b707e);">
-                    {{ current_user.username[0]|upper }}
-                </div>
+            <div class="card border rounded-4 p-4 mb-3 text-center bg-white shadow-sm position-relative">
+                <a href="{{ url_for('logout') }}" class="btn btn-sm btn-outline-danger position-absolute top-0 end-0 m-3 rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;" title="Logout">
+                    <img src="{{ url_for('static', filename='svg/logout.svg') }}" width="15" height="15" alt="Logout" style="filter: invert(27%) sepia(85%) saturate(2320%) hue-rotate(338deg) brightness(96%) contrast(92%);">
+                </a>
+                <img src="{{ url_for('static', filename='img/default_avatar.png') }}" class="rounded-circle mx-auto mb-2 shadow-sm border border-2" style="width: 72px; height: 72px; object-fit: cover;" alt="{{ current_user.username }}">
                 <h4 class="fw-bold mb-0 text-dark">{{ current_user.username|capitalize }}</h4>
                 <p class="text-muted small mb-2">{{ current_user.email }}</p>
+
+                <!-- Profile Balance Quick Check with Eye Toggle SVGs -->
+                <div class="d-inline-flex align-items-center justify-content-center gap-2 bg-light px-3 py-1 rounded-pill mb-2 border">
+                    <span class="text-muted small fw-semibold">Balance:</span>
+                    <span id="profileBalanceDisplay" class="fw-bold text-dark fs-6">₹{{ "%.2f"|format(balance if balance is defined and balance is not none else current_user.wallet.balance if current_user.wallet else 0.0) }}</span>
+                    <button type="button" class="btn btn-link p-0 text-decoration-none d-inline-flex align-items-center" id="profileBalanceEyeBtn" title="Toggle Balance Visibility">
+                        <img src="{{ url_for('static', filename='svg/eye.svg') }}" id="profileEyeImg" width="16" height="16" alt="Eye">
+                    </button>
+                </div>
+
                 <div class="d-flex justify-content-center align-items-center gap-2">
                     <span class="badge bg-light border text-dark small px-3 py-2 rounded-pill">
                         UPI ID: <span id="upiIdText" class="fw-bold">{{ upi_id }}</span>
@@ -122,6 +132,26 @@ document.addEventListener('DOMContentLoaded', () => {
                     linkCopyAlert.classList.add('d-none');
                 }, 2000);
             });
+        });
+    }
+
+    // Profile Balance Eye Toggle
+    const profileEyeBtn = document.getElementById('profileBalanceEyeBtn');
+    const profileBalanceDisplay = document.getElementById('profileBalanceDisplay');
+    const profileEyeImg = document.getElementById('profileEyeImg');
+    const actualProfBalance = profileBalanceDisplay ? profileBalanceDisplay.textContent : '';
+    let isProfHidden = false;
+
+    if (profileEyeBtn && profileBalanceDisplay && profileEyeImg) {
+        profileEyeBtn.addEventListener('click', () => {
+            isProfHidden = !isProfHidden;
+            if (isProfHidden) {
+                profileBalanceDisplay.textContent = '••••••••';
+                profileEyeImg.src = "{{ url_for('static', filename='svg/closed-eye.svg') }}";
+            } else {
+                profileBalanceDisplay.textContent = actualProfBalance;
+                profileEyeImg.src = "{{ url_for('static', filename='svg/eye.svg') }}";
+            }
         });
     }
 });

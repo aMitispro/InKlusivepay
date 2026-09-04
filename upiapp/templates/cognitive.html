@@ -224,8 +224,8 @@
 
     <!-- Safe Mode Active Top Bar (Image 1) -->
     <div class="safe-mode-banner">
-        <div class="safe-mode-badge">
-            <i class="bi bi-shield-lock-fill fs-4 text-success"></i>
+        <div class="safe-mode-badge d-flex align-items-center gap-2">
+            <img src="{{ url_for('static', filename='svg/secure.svg') }}" width="24" height="24" alt="Safe Mode">
             <span>Safe Mode Active</span>
         </div>
         <button type="button" class="btn btn-need-help" id="needHelpBtn">
@@ -255,12 +255,14 @@
                 </div>
                 <div>
                     {% if is_family_active %}
-                    <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-2 rounded-pill fs-6 fw-bold">
-                        <i class="bi bi-shield-fill-check me-1"></i>Family Circle Active
+                    <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-2 rounded-pill fs-6 fw-bold d-inline-flex align-items-center gap-1">
+                        <img src="{{ url_for('static', filename='svg/secure.svg') }}" width="16" height="16" alt="Secure">
+                        <span>Family Circle Active</span>
                     </span>
                     {% else %}
-                    <a href="{{ url_for('family_circle') }}" class="btn btn-sm btn-outline-secondary rounded-pill px-3">
-                        <i class="bi bi-people me-1"></i>Enable Family Circle
+                    <a href="{{ url_for('family_circle') }}" class="btn btn-sm btn-outline-secondary rounded-pill px-3 d-inline-flex align-items-center gap-1">
+                        <img src="{{ url_for('static', filename='svg/family.svg') }}" width="16" height="16" alt="Family" style="filter: brightness(0) opacity(0.7);">
+                        <span>Enable Family Circle</span>
                     </a>
                     {% endif %}
                 </div>
@@ -286,7 +288,7 @@
                         {% for c in favorite_contacts %}
                         <div class="position-relative d-inline-block">
                             <a href="{{ url_for('pay', to=c.username) }}" class="cog-contact-btn" title="Tap to send money to {{ c.nickname }}">
-                                <img src="{{ url_for('static', filename='img/alex_avatar.png') }}" class="cog-avatar-img" alt="{{ c.nickname }}">
+                                <img src="{{ url_for('static', filename='img/default_avatar.png') }}" class="cog-avatar-img" alt="{{ c.nickname }}">
                                 <span class="cog-contact-name">{{ c.nickname }}</span>
                             </a>
                             <!-- Remove button -->
@@ -304,7 +306,8 @@
                         </div>
                         <p class="text-muted small mb-3">No favorite contacts added yet.<br>Add friends or family with their email to send money in 1 click!</p>
                         <button type="button" class="btn btn-sm btn-auth-teal rounded-3 px-3 py-2 fw-bold" data-bs-toggle="modal" data-bs-target="#addFavoriteModal">
-                            <i class="bi bi-plus-circle me-1"></i>Add Contact using Email
+                            <img src="{{ url_for('static', filename='svg/add.svg') }}" width="16" height="16" alt="Add" class="me-1" style="filter: brightness(0) invert(1);">
+                            <span>Add Contact using Email</span>
                         </button>
                     </div>
                 {% endif %}
@@ -319,7 +322,7 @@
         <!-- Send Money -->
         <div class="col-md-6">
             <a href="{{ url_for('pay') }}" class="cog-big-btn-teal">
-                <i class="bi bi-wallet2 fs-2"></i>
+                <img src="{{ url_for('static', filename='svg/send.svg') }}" width="36" height="36" alt="Send" style="filter: brightness(0) invert(1);">
                 <span>Send Money</span>
             </a>
         </div>

@@ -191,7 +191,7 @@
     <div class="family-active-banner">
         <div class="d-flex align-items-center gap-3">
             <div class="banner-shield-icon">
-                <i class="bi bi-shield-check"></i>
+                <img src="{{ url_for('static', filename='svg/family.svg') }}" width="28" height="28" alt="Family" style="filter: brightness(0) invert(1);">
             </div>
             <div>
                 <h5 class="fw-bold text-dark mb-1">
@@ -202,8 +202,8 @@
             </div>
         </div>
         <div class="d-flex align-items-center gap-2">
-            <span class="badge-protected">
-                <i class="bi bi-shield-lock-fill"></i>
+            <span class="badge-protected d-inline-flex align-items-center gap-1">
+                <img src="{{ url_for('static', filename='svg/secure.svg') }}" width="18" height="18" alt="Protected">
                 <span>Protected</span>
             </span>
         </div>

@@ -41,11 +41,13 @@
                 </div>
 
                 <div class="d-flex gap-2 mt-3">
-                    <a href="{{ url_for('pay') }}" class="btn btn-auth-teal btn-sm flex-fill py-2 rounded-3">
-                        <i class="bi bi-send me-1"></i>Send Money
+                    <a href="{{ url_for('pay') }}" class="btn btn-auth-teal btn-sm flex-fill py-2 rounded-3 d-flex align-items-center justify-content-center gap-1">
+                        <img src="{{ url_for('static', filename='svg/send.svg') }}" width="16" height="16" alt="Send" style="filter: brightness(0) invert(1);">
+                        <span>Send Money</span>
                     </a>
-                    <a href="{{ url_for('deposit') }}" class="btn btn-outline-primary btn-sm flex-fill py-2 rounded-3">
-                        <i class="bi bi-plus-circle me-1"></i>Add Money
+                    <a href="{{ url_for('deposit') }}" class="btn btn-outline-primary btn-sm flex-fill py-2 rounded-3 d-flex align-items-center justify-content-center gap-1">
+                        <img src="{{ url_for('static', filename='svg/add.svg') }}" width="16" height="16" alt="Add">
+                        <span>Add Money</span>
                     </a>
                 </div>
             </div>
